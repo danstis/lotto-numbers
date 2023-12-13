@@ -42,11 +42,15 @@ func TestGenerateLotteryNumbers_UniqueNumbersInLine(t *testing.T) {
 
 	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
 
+	if len(generatedNumbers) == 0 {
+		t.Fatalf("No lines were generated, expected %d lines", lines)
+	}
+
 	for _, line := range generatedNumbers {
 		numMap := make(map[int]bool)
 		for _, num := range line {
 			if numMap[num] {
-				t.Errorf("Duplicate number found in a line: %d", num)
+				t.Fatalf("Duplicate number found in a line: %d", num)
 			}
 			numMap[num] = true
 		}
@@ -60,10 +64,14 @@ func TestGenerateLotteryNumbers_NumbersFromList(t *testing.T) {
 
 	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
 
+	if len(generatedNumbers) == 0 {
+		t.Fatalf("No lines were generated, expected %d lines", lines)
+	}
+
 	for _, line := range generatedNumbers {
 		for _, num := range line {
 			if !contains(numbersList, num) {
-				t.Errorf("Number %d in generated line is not in the original numbersList", num)
+				t.Fatalf("Number %d in generated line is not in the original numbersList", num)
 			}
 		}
 	}
