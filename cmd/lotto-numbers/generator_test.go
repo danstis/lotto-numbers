@@ -103,3 +103,20 @@ func TestGenerateLotteryNumbers_UniqueLines(t *testing.T) {
 		linesMap[lineKey] = true
 	}
 }
+func TestGenerateLotteryNumbers_NoDuplicatesInLine(t *testing.T) {
+	numbersList := []int{1, 1, 1, 1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29}
+	lines := 5
+	numPerLine := 5
+
+	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+
+	for _, line := range generatedNumbers {
+		seen := make(map[int]int)
+		for _, num := range line {
+			if seen[num] > 0 {
+				t.Fatalf("Duplicate number %d found in line: %v", num, line)
+			}
+			seen[num]++
+		}
+	}
+}
