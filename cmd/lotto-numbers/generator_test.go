@@ -24,9 +24,13 @@ func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
 
 	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
 
+	if len(generatedNumbers) == 0 {
+		t.Fatalf("No lines were generated, expected %d lines", lines)
+	}
+
 	for _, line := range generatedNumbers {
 		if len(line) != numPerLine {
-			t.Errorf("Expected %d numbers per line, got %d", numPerLine, len(line))
+			t.Fatalf("Expected %d numbers per line, got %d", numPerLine, len(line))
 		}
 	}
 }
