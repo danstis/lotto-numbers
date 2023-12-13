@@ -8,8 +8,7 @@ on:
       - "feature/*"
       - "fix/*"
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
@@ -57,41 +56,46 @@ jobs:
       - name: Run go build
         run: go build -v ./...
 
-  test:
-    name: Test
+  scan:
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
+    needs: [version]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:
           go-version: ^1.20
         id: go
       - name: Test
-        run: go test -v -race ./...
-      - name: Go Vet
-        run: go vet ./...
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        run: go test -v -coverprofile=coverage.out -covermode=count -json ./... > test-report.out
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3.1.1
         with:
-          go-version: ^1.20
-        id: go
-
+          file: ./coverage.out # optional
+      - name: Go Vet
+        run: go vet ./... > govet.out
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
         uses: golangci/golangci-lint-action@v3
+        with:
+          args: --issues-exit-code=0 --out-format=checkstyle:golangci-lint.out
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master # https://github.com/marketplace/actions/sonarcloud-scan
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        with:
+          args: >
+            -Dsonar.projectVersion=${{ needs.version.outputs.FullSemVer }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [build, test, lint, version]
+    needs: [build, scan, version]
     if: contains(github.ref, 'main')
     steps:
       - name: Check out code

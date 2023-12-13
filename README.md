@@ -4,6 +4,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/danstis/lotto-numbers?style=flat-square)](https://goreportcard.com/report/github.com/danstis/lotto-numbers)
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/danstis/lotto-numbers)](https://pkg.go.dev/github.com/danstis/lotto-numbers)
 [![Release](https://img.shields.io/github/release/danstis/lotto-numbers.svg?style=flat-square)](https://github.com/danstis/lotto-numbers/releases/latest)
+[![codecov](https://codecov.io/gh/danstis/lotto-numbers/graph/badge.svg?token=csgW5w5uNs)](https://codecov.io/gh/danstis/lotto-numbers)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=danstis_lotto-numbers&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=danstis_lotto-numbers)
 
 My base repo template for Go projects.
 
