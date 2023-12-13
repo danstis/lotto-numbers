@@ -19,7 +19,6 @@ func init() {
 // Returns:
 // A 2D slice of integers representing the generated lottery numbers.
 func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
-func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
 	if len(numbersList) < numPerLine {
 		return nil // Not enough numbers to generate a line
 	}
