@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 )
@@ -105,7 +106,7 @@ func TestGenerateLotteryNumbers_UniqueLines(t *testing.T) {
 }
 func TestGenerateLotteryNumbers_NoDuplicatesInLine(t *testing.T) {
 	numbersList := []int{1, 1, 1, 1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29}
-	lines := 5
+	lines := 10
 	numPerLine := 5
 
 	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
