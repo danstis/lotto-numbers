@@ -31,13 +31,21 @@ func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
 		rand.Shuffle(len(numbersList), func(i, j int) {
 			numbersList[i], numbersList[j] = numbersList[j], numbersList[i]
 		})
-		line := make([]int, numPerLine)
-		copy(line, numbersList[:numPerLine])
-		sort.Ints(line) // Sort to normalize the line for comparison
-		lineKey := fmt.Sprint(line)
-		if !linesMap[lineKey] {
-			linesMap[lineKey] = true
-			lotteryNumbers = append(lotteryNumbers, line)
+		uniqueLine := make(map[int]bool)
+		line := make([]int, 0, numPerLine)
+		for _, num := range numbersList[:numPerLine] {
+			if !uniqueLine[num] {
+				uniqueLine[num] = true
+				line = append(line, num)
+			}
+		}
+		if len(line) == numPerLine {
+			sort.Ints(line) // Sort to normalize the line for comparison
+			lineKey := fmt.Sprint(line)
+			if !linesMap[lineKey] {
+				linesMap[lineKey] = true
+				lotteryNumbers = append(lotteryNumbers, line)
+			}
 		}
 	}
 	return lotteryNumbers
