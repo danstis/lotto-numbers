@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/danstis/gotemplate/internal/version"
+	"github.com/danstis/lotto-numbers/internal/version"
 )
 
 // Main entry point for the app.

@@ -1,3 +1,3 @@
-module github.com/danstis/gotemplate
+module github.com/danstis/lotto-numbers
 
-go 1.18
+go 1.20
