@@ -7,9 +7,6 @@ import (
 	"time"
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 // generateLotteryNumbers generates a list of lottery numbers based on the given parameters.
 //
@@ -27,8 +24,9 @@ func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
 
 	lotteryNumbers := make([][]int, 0, lines)
 	linesMap := make(map[string]bool)
+	localRand := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for len(lotteryNumbers) < lines {
-		rand.Shuffle(len(numbersList), func(i, j int) {
+		localRand.Shuffle(len(numbersList), func(i, j int) {
 			numbersList[i], numbersList[j] = numbersList[j], numbersList[i]
 		})
 		uniqueLine := make(map[int]bool)
