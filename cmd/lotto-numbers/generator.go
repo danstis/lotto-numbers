@@ -24,13 +24,19 @@ func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
 	}
 
 	lotteryNumbers := make([][]int, 0, lines)
-	for i := 0; i < lines; i++ {
+	linesMap := make(map[string]bool)
+	for len(lotteryNumbers) < lines {
 		rand.Shuffle(len(numbersList), func(i, j int) {
 			numbersList[i], numbersList[j] = numbersList[j], numbersList[i]
 		})
 		line := make([]int, numPerLine)
 		copy(line, numbersList[:numPerLine])
-		lotteryNumbers = append(lotteryNumbers, line)
+		sort.Ints(line) // Sort to normalize the line for comparison
+		lineKey := fmt.Sprint(line)
+		if !linesMap[lineKey] {
+			linesMap[lineKey] = true
+			lotteryNumbers = append(lotteryNumbers, line)
+		}
 	}
 	return lotteryNumbers
 }
