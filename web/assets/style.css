@@ -1,9 +1,9 @@
 .number-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(60px, 60px));
+	grid-template-columns: repeat(5, 60px);
 	justify-content: center;
 	gap: 10px;
-	max-width: 300px; /* Adjust the max-width as needed */
+	max-width: 340px; /* Adjusted to fit 5 items */
 	margin: 0 auto;
 }
 
