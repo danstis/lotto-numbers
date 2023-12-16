@@ -28,9 +28,9 @@ function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
   container.innerHTML = ""; // Clear previous results
 
-  data.lines.forEach((line) => {
+  data.lines.forEach((line, index) => {
     const lineElem = document.createElement("div");
-    lineElem.textContent = `Line: ${line.join(", ")}`;
+    lineElem.textContent = `Line ${index + 1}: ${line.join(", ")}`;
     container.appendChild(lineElem);
   });
 }
