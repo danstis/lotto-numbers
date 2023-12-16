@@ -61,8 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("generateButton").onclick = function () {
     // Construct the API URL
-    let numbersJoined = selectedNumbers.join(", ");
-    let apiUrl = `./numbers?lines=${numLines}&numPerLine=${numPerLine}&numbersList=${numbersJoined}`;
+    let numLinesValue = document.getElementById("numLines").value;
+    let numPerLineValue = document.getElementById("numPerLine").value;
+    let numbersJoined = selectedNumbers.join(",");
+    let apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
 
     // Fetch data from the API
     fetch(apiUrl)
