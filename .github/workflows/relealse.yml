@@ -37,7 +37,7 @@ jobs:
         id: go
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
-        if: ${{ needs.version.outputs.PreReleaseTagWithDash == '' }}
+        if: ${{ steps.gitversion.outputs.PreReleaseTagWithDash == '' }}
         with:
           version: latest
           args: release --clean
