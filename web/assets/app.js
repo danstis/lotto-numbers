@@ -16,16 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to update the display of selected numbers
   function updateDisplay() {
     const selectedNumbersElement = document.getElementById("selectedNumbers");
-    selectedNumbersElement.innerHTML = ''; // Clear previous content
+    selectedNumbersElement.innerHTML = ""; // Clear previous content
     if (selectedNumbers.length > 0) {
-      selectedNumbers.forEach(number => {
+      selectedNumbers.forEach((number) => {
         const numberElement = document.createElement("div");
         numberElement.textContent = number;
         numberElement.classList.add("number-circle");
         selectedNumbersElement.appendChild(numberElement);
       });
     } else {
-      selectedNumbersElement.textContent = 'None';
+      selectedNumbersElement.textContent = "None";
     }
   }
 
@@ -42,7 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const numberElement = document.createElement("div");
     numberElement.textContent = i;
     numberElement.dataset.number = i;
-    numberElement.classList.add("w-10", "h-10", "bg-blue-500", "text-white", "flex", "items-center", "justify-center", "rounded-full", "mx-auto");
+    numberElement.classList.add(
+      "w-10",
+      "h-10",
+      "bg-blue-500",
+      "text-white",
+      "flex",
+      "items-center",
+      "justify-center",
+      "rounded-full",
+      "mx-auto"
+    );
     numberElement.onclick = handleNumberClick;
     numberGrid.appendChild(numberElement);
   }
@@ -54,10 +64,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDisplay();
     // Clear the generated lines
     const numbersContainer = document.getElementById("numbersContainer");
-    numbersContainer.innerHTML = '';
+    numbersContainer.innerHTML = "";
     // Use a different approach to remove the 'selected' class from all elements
     const numberElements = numberGrid.querySelectorAll(".selected");
-    numberElements.forEach(function(element) {
+    numberElements.forEach(function (element) {
       element.classList.remove("selected");
     });
   }
@@ -99,8 +109,8 @@ function displayNumbers(data) {
       container.appendChild(divider);
     }
     const lineElem = document.createElement("div");
-    lineElem.classList.add("flex", "flex-wrap", "justify-start", "mb-2");
-    line.forEach(number => {
+    lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
+    line.forEach((number) => {
       const numberElement = document.createElement("div");
       numberElement.textContent = number;
       numberElement.classList.add("generated-number-circle");
