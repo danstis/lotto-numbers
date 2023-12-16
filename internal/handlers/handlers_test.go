@@ -69,16 +69,21 @@ func TestGetLotteryNumbers(t *testing.T) {
 			handler.ServeHTTP(rr, req)
 
 			assert.Equal(t, tc.wantStatusCode, rr.Code, "handler returned wrong status code")
-			assert.Equal(t, "application/json", rr.Header().Get("Content-Type"), "content type is not application/json")
+			// For the invalid numbers list, we expect a plain text error message, not a JSON response
+			if tc.name == "Invalid numbers list" {
+				assert.Equal(t, "text/plain; charset=utf-8", rr.Header().Get("Content-Type"), "content type is not text/plain; charset=utf-8")
+			} else {
+				assert.Equal(t, "application/json", rr.Header().Get("Content-Type"), "content type is not application/json")
 
-			var lotteryNumbers models.LotteryNumbers
-			err = json.NewDecoder(rr.Body).Decode(&lotteryNumbers)
-			assert.NoError(t, err, "response body should be a valid LotteryNumbers JSON")
-			assert.Len(t, lotteryNumbers.Lines, tc.wantLines, "there should be the correct number of lines of lottery numbers")
-			for _, line := range lotteryNumbers.Lines {
-				assert.Len(t, line, tc.wantNumPerLine, "each line should contain the correct number of numbers")
-				if tc.wantSubset != nil {
-					assert.Subset(t, tc.wantSubset, line, "each line should only contain numbers from the provided numbersList")
+				var lotteryNumbers models.LotteryNumbers
+				err = json.NewDecoder(rr.Body).Decode(&lotteryNumbers)
+				assert.NoError(t, err, "response body should be a valid LotteryNumbers JSON")
+				assert.Len(t, lotteryNumbers.Lines, tc.wantLines, "there should be the correct number of lines of lottery numbers")
+				for _, line := range lotteryNumbers.Lines {
+					assert.Len(t, line, tc.wantNumPerLine, "each line should contain the correct number of numbers")
+					if tc.wantSubset != nil {
+						assert.Subset(t, tc.wantSubset, line, "each line should only contain numbers from the provided numbersList")
+					}
 				}
 			}
 		})
