@@ -16,19 +16,23 @@
 		<h2 class="font-bold text-lg mb-4">Number Generation Settings</h2>
 		<div class="mb-4">
 			<label class="mr-2">Generate</label>
-			<input type="number" id="numLines" class="border-2 border-gray-300 rounded-lg text-center" min="1" max="100" placeholder="Lines to generate" value="4">
+			<input type="number" id="numLines" class="border-2 border-gray-300 rounded-lg text-center" min="1" max="100"
+				placeholder="Lines to generate" value="4">
 			<label class="mx-2">lines of</label>
-			<input type="number" id="numPerLine" class="border-2 border-gray-300 rounded-lg text-center" min="1" max="20" placeholder="Numbers per line" value="6">
+			<input type="number" id="numPerLine" class="border-2 border-gray-300 rounded-lg text-center" min="1"
+				max="20" placeholder="Numbers per line" value="6">
 			<label>numbers</label>
 		</div>
 		<div class="mb-4">
-			<p>Using the following set of numbers:</p>
-			<div id="numberGrid" class="grid grid-cols-5 gap-2.5 justify-center mx-auto p-4 bg-blue-600 rounded-lg" style="max-width: 370px;">
+			<p>Using the following numbers</p>
+			<div id="numberGrid" class="grid grid-cols-5 gap-2.5 justify-center mx-auto p-4 bg-blue-600 rounded-lg"
+				style="max-width: 370px;">
 				<!-- Dynamically generated number elements -->
 			</div>
 		</div>
 		<p id="selectedNumbers" class="mb-4"></p>
-		<button id="generateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate</button>
+		<button id="generateButton"
+			class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate</button>
 	</div>
 	<hr>
 	<div id="resultSection">
