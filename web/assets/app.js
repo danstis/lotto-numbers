@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDisplay();
     // Clear the generated lines
     const numbersContainer = document.getElementById("numbersContainer");
-    numbersContainer.innerHTML = "";
+    numbersContainer.innerHTML = "None";
     // Use a different approach to remove the 'selected' class from all elements
     const numberElements = numberGrid.querySelectorAll(".selected");
     numberElements.forEach(function (element) {

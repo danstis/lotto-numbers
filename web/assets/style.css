@@ -38,7 +38,6 @@
 	overflow-x: auto; /* Allow horizontal scrolling if content is too wide */
 	margin-left: auto; /* Center the box */
 	margin-right: auto; /* Center the box */
-	color: #ffffff; /* Set default text color to white */
 }
 
 #resultSection h2 {
