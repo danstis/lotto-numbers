@@ -1,4 +1,4 @@
-package main
+package generator
 
 import (
 	"fmt"
@@ -7,8 +7,7 @@ import (
 	"time"
 )
 
-
-// generateLotteryNumbers generates a list of lottery numbers based on the given parameters.
+// GetNumbers generates a list of lottery numbers based on the given parameters.
 //
 // Parameters:
 // - numbersList: a list of integers representing the available numbers for the lottery.
@@ -17,7 +16,7 @@ import (
 //
 // Returns:
 // A 2D slice of integers representing the generated lottery numbers.
-func generateLotteryNumbers(numbersList []int, lines, numPerLine int) [][]int {
+func GetNumbers(numbersList []int, lines, numPerLine int) [][]int {
 	if len(numbersList) < numPerLine {
 		return nil // Not enough numbers to generate a line
 	}
