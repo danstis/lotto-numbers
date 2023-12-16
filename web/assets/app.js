@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the display of selected numbers
   function updateDisplay() {
-    document.getElementById("selectedNumbers").textContent =
-      selectedNumbers.join(", ");
+    const selectedNumbersText = selectedNumbers.length > 0 ? selectedNumbers.join(", ") : 'None';
+    document.getElementById("selectedNumbers").textContent = selectedNumbersText;
   }
 
   // Function to handle number click

@@ -3,3 +3,13 @@
 	background-color: #ffc107;
 	/* Highlight color for selected numbers */
 }
+#selectedNumbersBox {
+	background-color: #d1e7dd; /* A light green background color */
+	border-radius: 0.5rem; /* Rounded corners */
+	padding: 1rem; /* Padding around the content */
+	margin-bottom: 1rem; /* Margin at the bottom */
+}
+
+#selectedNumbersBox h3 {
+	margin-bottom: 0.5rem; /* Space between the title and the numbers */
+}
