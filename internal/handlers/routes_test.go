@@ -13,26 +13,31 @@ func TestRoutes(t *testing.T) {
 	SetupRoutes(r)
 
 	tests := []struct {
+		method       string
 		description  string
 		route        string
 		expectedCode int
 	}{
 		{
+			method:       "GET",
 			description:  "Index route",
 			route:        "/",
 			expectedCode: http.StatusOK,
 		},
 		{
+			method:       "GET",
 			description:  "Lottery numbers route",
 			route:        "/numbers",
 			expectedCode: http.StatusOK,
 		},
 		{
+			method:       "GET",
 			description:  "Assets route",
 			route:        "/assets/app.js",
 			expectedCode: http.StatusOK,
 		},
 		{
+			method:       "GET",
 			description:  "Styles route",
 			route:        "/assets/style.css",
 			expectedCode: http.StatusOK,
@@ -40,7 +45,7 @@ func TestRoutes(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		req, err := http.NewRequest("GET", test.route, nil)
+		req, err := http.NewRequest(test.method, test.route, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
