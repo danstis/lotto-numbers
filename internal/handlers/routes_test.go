@@ -8,27 +8,49 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func TestSetupRoutes(t *testing.T) {
+func TestRoutes(t *testing.T) {
 	r := mux.NewRouter()
 	SetupRoutes(r)
 
-	// Create a new HTTP request that will be tested against the router.
-	req, err := http.NewRequest("GET", "/numbers", nil)
-	if err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		description  string
+		route        string
+		expectedCode int
+	}{
+		{
+			description:  "Index route",
+			route:        "/",
+			expectedCode: http.StatusOK,
+		},
+		{
+			description:  "Lottery numbers route",
+			route:        "/numbers",
+			expectedCode: http.StatusOK,
+		},
+		{
+			description:  "Assets route",
+			route:        "/assets/app.js",
+			expectedCode: http.StatusOK,
+		},
+		{
+			description:  "Styles route",
+			route:        "/assets/style.css",
+			expectedCode: http.StatusOK,
+		},
 	}
 
-	// Create a ResponseRecorder to record the response.
-	rr := httptest.NewRecorder()
-	handler := http.Handler(r)
+	for _, test := range tests {
+		req, err := http.NewRequest("GET", test.route, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	// Serve the HTTP request to our router.
-	handler.ServeHTTP(rr, req)
+		rr := httptest.NewRecorder()
+		r.ServeHTTP(rr, req)
 
-	// Check the status code is what we expect.
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+		if status := rr.Code; status != test.expectedCode {
+			t.Errorf("handler returned wrong status code: got %v want %v",
+				status, test.expectedCode)
+		}
 	}
-
-	// Add more tests as needed to cover different routes and methods.
 }
