@@ -89,7 +89,6 @@ function displayNumbers(data) {
   container.innerHTML = ""; // Clear previous results
 
   data.lines.forEach((line, index) => {
-    const lineElem = document.createElement("div");
     if (index > 0) {
       // Add a divider before each new line except the first
       const divider = document.createElement("div");
