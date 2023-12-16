@@ -101,23 +101,27 @@ function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
   container.innerHTML = ""; // Clear previous results
 
-  data.lines.forEach((line, index) => {
-    if (index > 0) {
-      // Add a divider before each new line except the first
-      const divider = document.createElement("div");
-      divider.classList.add("line-divider");
-      container.appendChild(divider);
-    }
-    const lineElem = document.createElement("div");
-    lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
-    line.forEach((number) => {
-      const numberElement = document.createElement("div");
-      numberElement.textContent = number;
-      numberElement.classList.add("generated-number-circle");
-      lineElem.appendChild(numberElement);
+  if (data.lines.length === 0) {
+    container.textContent = "None"; // Display placeholder text when no lines are generated
+  } else {
+    data.lines.forEach((line, index) => {
+      if (index > 0) {
+        // Add a divider before each new line except the first
+        const divider = document.createElement("div");
+        divider.classList.add("line-divider");
+        container.appendChild(divider);
+      }
+      const lineElem = document.createElement("div");
+      lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
+      line.forEach((number) => {
+        const numberElement = document.createElement("div");
+        numberElement.textContent = number;
+        numberElement.classList.add("generated-number-circle");
+        lineElem.appendChild(numberElement);
+      });
+      container.appendChild(lineElem);
     });
-    container.appendChild(lineElem);
-  });
+  }
 }
 
 function displayError(error) {
