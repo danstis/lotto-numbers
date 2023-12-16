@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/danstis/lotto-numbers/internal/models" // Import the models package
+	"github.com/danstis/lotto-numbers/internal/generator" // Import the generator package
+	"github.com/danstis/lotto-numbers/internal/models"    // Import the models package
 )
 
 // GetLotteryNumbers handles the request to generate lottery numbers.
@@ -15,7 +16,7 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	numPerLine := 6 // The number of numbers per line
 
 	// Call the generateLotteryNumbers function with the defined parameters
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := generator.GetNumbers(numbersList, lines, numPerLine)
 
 	// Create a LotteryNumbers struct with the generated numbers
 	numbers := models.LotteryNumbers{

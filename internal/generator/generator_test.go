@@ -1,4 +1,4 @@
-package main
+package generator
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ func TestGenerateLotteryNumbers_CorrectNumberOfLines(t *testing.T) {
 	lines := 3
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	if len(generatedNumbers) != lines {
 		t.Errorf("Expected %d lines, got %d", lines, len(generatedNumbers))
@@ -23,7 +23,7 @@ func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
 	lines := 3
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	if len(generatedNumbers) == 0 {
 		t.Fatalf("No lines were generated, expected %d lines", lines)
@@ -41,7 +41,7 @@ func TestGenerateLotteryNumbers_UniqueNumbersInLine(t *testing.T) {
 	lines := 3
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	if len(generatedNumbers) == 0 {
 		t.Fatalf("No lines were generated, expected %d lines", lines)
@@ -63,7 +63,7 @@ func TestGenerateLotteryNumbers_NumbersFromList(t *testing.T) {
 	lines := 3
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	if len(generatedNumbers) == 0 {
 		t.Fatalf("No lines were generated, expected %d lines", lines)
@@ -88,7 +88,7 @@ func TestGenerateLotteryNumbers_UniqueLines(t *testing.T) {
 	lines := 5
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	if len(generatedNumbers) == 0 {
 		t.Fatalf("No lines were generated, expected %d lines", lines)
@@ -109,7 +109,7 @@ func TestGenerateLotteryNumbers_NoDuplicatesInLine(t *testing.T) {
 	lines := 10
 	numPerLine := 5
 
-	generatedNumbers := generateLotteryNumbers(numbersList, lines, numPerLine)
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
 	for _, line := range generatedNumbers {
 		seen := make(map[int]int)
