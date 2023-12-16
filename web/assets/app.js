@@ -48,10 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to handle generate button click
-  // Function to clear selected numbers
+  // Function to clear selected numbers and generated lines
   function clearSelectedNumbers() {
     selectedNumbers.length = 0; // Clear the array
     updateDisplay();
+    // Clear the generated lines
+    const numbersContainer = document.getElementById("numbersContainer");
+    numbersContainer.innerHTML = '';
     // Use a different approach to remove the 'selected' class from all elements
     const numberElements = numberGrid.querySelectorAll(".selected");
     numberElements.forEach(function(element) {
