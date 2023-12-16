@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const numberElement = document.createElement("div");
     numberElement.textContent = i;
     numberElement.dataset.number = i;
-    numberElement.classList.add("number");
+    numberElement.classList.add("w-10", "h-10", "bg-blue-500", "text-white", "flex", "items-center", "justify-center", "rounded-full", "mx-auto");
     numberElement.onclick = handleNumberClick;
     numberGrid.appendChild(numberElement);
   }
