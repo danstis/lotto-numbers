@@ -49,8 +49,8 @@ func TestRoutes(t *testing.T) {
 		r.ServeHTTP(rr, req)
 
 		if status := rr.Code; status != test.expectedCode {
-			t.Errorf("handler returned wrong status code: got %v want %v",
-				status, test.expectedCode)
+			t.Errorf("handler returned wrong status code for route %s: got %v want %v, response: %s",
+				test.route, status, test.expectedCode, rr.Body.String())
 		}
 	}
 }
