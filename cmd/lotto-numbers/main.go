@@ -16,7 +16,7 @@ func main() {
 
 	// Set up the HTTP server using Gorilla Mux
 	r := mux.NewRouter()
-	r.HandleFunc("/lottery-numbers", handlers.GetLotteryNumbers).Methods("GET")
+	r.HandleFunc("/numbers", handlers.GetLotteryNumbers).Methods("GET")
 
 	// Retrieve the port number from an environment variable or use 8080 as default
 	port := os.Getenv("PORT")
