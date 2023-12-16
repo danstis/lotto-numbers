@@ -15,8 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the display of selected numbers
   function updateDisplay() {
-    const selectedNumbersText = selectedNumbers.length > 0 ? selectedNumbers.join(", ") : 'None';
-    document.getElementById("selectedNumbers").textContent = selectedNumbersText;
+    const selectedNumbersElement = document.getElementById("selectedNumbers");
+    selectedNumbersElement.innerHTML = ''; // Clear previous content
+    if (selectedNumbers.length > 0) {
+      selectedNumbers.forEach(number => {
+        const numberElement = document.createElement("div");
+        numberElement.textContent = number;
+        numberElement.classList.add("number-circle");
+        selectedNumbersElement.appendChild(numberElement);
+      });
+    } else {
+      selectedNumbersElement.textContent = 'None';
+    }
   }
 
   // Function to handle number click
