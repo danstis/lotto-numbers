@@ -1,4 +1,4 @@
-name: Build Test and Release
+name: Build and Test
 
 on:
   push:
@@ -37,6 +37,7 @@ jobs:
           echo "::notice::PreReleaseTagWithDash ${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
       - name: Bump version and push tag # https://github.com/marketplace/actions/github-tag
         uses: mathieudutour/github-tag-action@v6.1
+        if: ${{ steps.gitversion.outputs.PreReleaseTagWithDash == '' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.gitversion.outputs.FullSemVer }}
@@ -91,26 +92,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    needs: [build, scan, version]
-    if: contains(github.ref, 'main')
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version: ^1.20
-        id: go
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        if: ${{ needs.version.outputs.PreReleaseTagWithDash == '' }}
-        with:
-          version: latest
-          args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
