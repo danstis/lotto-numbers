@@ -32,7 +32,9 @@
 	border-radius: 0.5rem; /* Rounded corners */
 	padding: 1rem; /* Padding around the content */
 	margin-bottom: 1rem; /* Margin at the bottom */
-	max-width: 370px; /* Match the width of the number grid */
+	width: auto; /* Allow the section to grow as wide as the content */
+	max-width: 100%; /* Prevent it from exceeding the screen width */
+	overflow-x: auto; /* Allow horizontal scrolling if content is too wide */
 	margin-left: auto; /* Center the box */
 	margin-right: auto; /* Center the box */
 }
@@ -42,13 +44,17 @@
 }
 
 .generated-number-circle {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-block; /* Change to inline-block for wrapping */
 	width: 2.5rem; /* Same width as number grid circles */
 	height: 2.5rem; /* Same height as number grid circles */
 	background-color: #4299e1; /* Same background color as number grid circles */
 	color: #ffffff; /* Same text color as number grid circles */
 	border-radius: 9999px; /* Fully rounded corners to make it a circle */
 	margin: 0.125rem; /* Small margin for spacing */
+}
+
+.line-divider {
+	height: 1px; /* Height of the divider */
+	background-color: #e2e8f0; /* Color of the divider */
+	margin: 0.5rem 0; /* Vertical spacing around the divider */
 }

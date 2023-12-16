@@ -90,12 +90,18 @@ function displayNumbers(data) {
 
   data.lines.forEach((line, index) => {
     const lineElem = document.createElement("div");
-    lineElem.classList.add("mb-2");
-    lineElem.textContent = `Line ${index + 1}:`;
+    if (index > 0) {
+      // Add a divider before each new line except the first
+      const divider = document.createElement("div");
+      divider.classList.add("line-divider");
+      container.appendChild(divider);
+    }
+    const lineElem = document.createElement("div");
+    lineElem.classList.add("flex", "flex-wrap", "justify-start", "mb-2");
     line.forEach(number => {
       const numberElement = document.createElement("div");
       numberElement.textContent = number;
-      numberElement.classList.add("generated-number-circle", "inline-block");
+      numberElement.classList.add("generated-number-circle");
       lineElem.appendChild(numberElement);
     });
     container.appendChild(lineElem);
