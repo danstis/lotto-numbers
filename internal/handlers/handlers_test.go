@@ -37,9 +37,10 @@ func TestGetLotteryNumbers(t *testing.T) {
 		{
 			name:           "Invalid numbers list",
 			query:          "?numbersList=invalid",
-			wantStatusCode: http.StatusOK,
-			wantLines:      5,
-			wantNumPerLine: 6,
+			wantStatusCode: http.StatusBadRequest, // Expecting a bad request status when numbersList is invalid
+			wantLines:      0, // When there's an error, no lines should be returned
+			wantNumPerLine: 0, // When there's an error, numPerLine should be irrelevant
+			wantSubset:     nil, // No subset should be expected on error
 		},
 		{
 			name:           "Valid lines parameter",
