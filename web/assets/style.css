@@ -5,6 +5,9 @@
 	gap: 10px;
 	max-width: 340px; /* Adjusted to fit 5 items */
 	margin: 0 auto;
+	padding: 15px; /* Overhang distance */
+	background-color: #0056b3; /* Slightly lighter blue than the numbers */
+	border-radius: 15px; /* Rounded corners */
 }
 
 .number {
