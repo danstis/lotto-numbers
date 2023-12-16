@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const numberGrid = document.getElementById('numberGrid');
+document.addEventListener("DOMContentLoaded", function () {
+  const numberGrid = document.getElementById("numberGrid");
   const selectedNumbers = [];
 
   // Function to toggle selection
@@ -14,36 +14,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Function to update the display of selected numbers
   function updateDisplay() {
-    document.getElementById('selectedNumbers').textContent = selectedNumbers.join(', ');
+    document.getElementById("selectedNumbers").textContent =
+      selectedNumbers.join(", ");
   }
 
   // Function to handle number click
   function handleNumberClick(event) {
     const number = event.target.dataset.number;
-    event.target.classList.toggle('selected');
+    event.target.classList.toggle("selected");
     toggleNumberSelection(number);
     updateDisplay();
   }
 
   // Initialize the number grid
   for (let i = 1; i <= 40; i++) {
-    const numberElement = document.createElement('div');
+    const numberElement = document.createElement("div");
     numberElement.textContent = i;
     numberElement.dataset.number = i;
-    numberElement.classList.add('number');
+    numberElement.classList.add("number");
     numberElement.onclick = handleNumberClick;
     numberGrid.appendChild(numberElement);
   }
 
   // Function to handle generate button click
-  document.getElementById('generateButton').onclick = function() {
-    alert('Selected Numbers: ' + selectedNumbers.join(', '));
-    // Here you could also send the data to a server or handle it as needed
-  };
-});
-
+  document.getElementById("generateButton").onclick = function () {
     // Construct the API URL
-    let apiUrl = `./numbers?lines=${numLines}&numPerLine=${numPerLine}&numbersList=${numbers}`;
+    let numbersJoined = selectedNumbers.join(", ");
+    let apiUrl = `./numbers?lines=${numLines}&numPerLine=${numPerLine}&numbersList=${numbersJoined}`;
 
     // Fetch data from the API
     fetch(apiUrl)
@@ -58,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("Error fetching data:", error);
         displayError(error);
       });
-  });
+  };
+});
 
 function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
