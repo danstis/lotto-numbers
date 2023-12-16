@@ -1,27 +1,3 @@
-.number-grid {
-	display: grid;
-	grid-template-columns: repeat(5, 60px);
-	justify-content: center;
-	gap: 10px;
-	max-width: 370px; /* Adjusted to fit 5 items without touching the sides */
-	margin: 0 auto;
-	padding: 15px; /* Uniform overhang distance */
-	background-color: #0056b3; /* Slightly lighter blue than the numbers */
-	border-radius: 15px; /* Rounded corners */
-}
-
-.number {
-	background-color: #007bff;
-	color: white;
-	width: 60px;
-	height: 60px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	border-radius: 50%;
-	/* Ensures a circular shape */
-}
 
 .selected {
 	background-color: #ffc107;
