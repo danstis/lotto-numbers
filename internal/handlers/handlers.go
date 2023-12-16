@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -13,42 +14,19 @@ import (
 
 // GetLotteryNumbers handles the request to generate lottery numbers.
 func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
-	// Parse query parameters with default values
+	// Parse query parameters
 	defaultNumbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
-	defaultLines := 5
-	defaultNumPerLine := 6
-
-	numbersList := defaultNumbersList
-	if numbersParam, ok := r.URL.Query()["numbersList"]; ok && len(numbersParam[0]) > 0 {
-		var parsedNumbersList []int
-		for _, numStr := range strings.Split(numbersParam[0], ",") {
-			num, err := strconv.Atoi(strings.TrimSpace(numStr))
-			if err != nil {
-				// If there's an error, log it, send a bad request status, and stop processing
-				log.Printf("Error parsing numbersList: %v", err)
-				http.Error(w, "Bad request: invalid numbersList parameter", http.StatusBadRequest)
-				return
-			}
-			parsedNumbersList = append(parsedNumbersList, num)
-		}
-		if parsedNumbersList != nil {
-			numbersList = parsedNumbersList
-		}
+	numbersList, err := parseNumbersListQueryParam(r)
+	if err != nil {
+		sendHTTPError(w, "Bad request", err, http.StatusBadRequest)
+		return
+	}
+	if numbersList == nil {
+		numbersList = defaultNumbersList
 	}
 
-	lines := defaultLines
-	if linesParam, ok := r.URL.Query()["lines"]; ok && len(linesParam[0]) > 0 {
-		if parsedLines, err := strconv.Atoi(linesParam[0]); err == nil {
-			lines = parsedLines
-		}
-	}
-
-	numPerLine := defaultNumPerLine
-	if numPerLineParam, ok := r.URL.Query()["numPerLine"]; ok && len(numPerLineParam[0]) > 0 {
-		if parsedNumPerLine, err := strconv.Atoi(numPerLineParam[0]); err == nil {
-			numPerLine = parsedNumPerLine
-		}
-	}
+	lines := parseQueryParamInt(r, "lines", 5)
+	numPerLine := parseQueryParamInt(r, "numPerLine", 6)
 
 	// Call the generateLotteryNumbers function with the defined parameters
 	generatedNumbers := generator.GetNumbers(numbersList, lines, numPerLine)
@@ -65,4 +43,36 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+}
+
+// parseQueryParamInt parses an integer query parameter.
+func parseQueryParamInt(r *http.Request, param string, defaultValue int) int {
+	if value, ok := r.URL.Query()[param]; ok && len(value[0]) > 0 {
+		if intValue, err := strconv.Atoi(value[0]); err == nil {
+			return intValue
+		}
+	}
+	return defaultValue
+}
+
+// parseNumbersListQueryParam parses the numbersList query parameter.
+func parseNumbersListQueryParam(r *http.Request) ([]int, error) {
+	if numbersParam, ok := r.URL.Query()["numbersList"]; ok && len(numbersParam[0]) > 0 {
+		var parsedNumbersList []int
+		for _, numStr := range strings.Split(numbersParam[0], ",") {
+			num, err := strconv.Atoi(strings.TrimSpace(numStr))
+			if err != nil {
+				return nil, fmt.Errorf("invalid numbersList parameter: %v", err)
+			}
+			parsedNumbersList = append(parsedNumbersList, num)
+		}
+		return parsedNumbersList, nil
+	}
+	return nil, nil
+}
+
+// sendHTTPError logs the error and sends an HTTP error response.
+func sendHTTPError(w http.ResponseWriter, errMsg string, err error, statusCode int) {
+	log.Printf("%s: %v", errMsg, err)
+	http.Error(w, errMsg, statusCode)
 }
