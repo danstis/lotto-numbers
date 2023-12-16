@@ -15,7 +15,11 @@ import (
 // GetLotteryNumbers handles the request to generate lottery numbers.
 func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters
-	defaultNumbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+	defaultNumbersList := make([]int, 40)
+	for i := 0; i < 40; i++ {
+		defaultNumbersList[i] = i + 1
+	}
+
 	numbersList, err := parseNumbersListQueryParam(r)
 	if err != nil {
 		sendHTTPError(w, "Bad request", err, http.StatusBadRequest)

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Rex's Lottery Number Generator</title>
+	<!-- Tailwind CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<!-- Custom Styles -->
+	<link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+	<div id="inputSection" class="text-center p-4">
+		<h2 class="font-bold text-lg mb-4">Number Generation Settings</h2>
+		<div class="mb-4">
+			<label class="mr-2">Generate</label>
+			<input type="number" id="numLines" class="border-2 border-gray-300 rounded-lg text-center" min="1" max="100"
+				placeholder="Lines to generate" value="4">
+			<label class="mx-2">lines of</label>
+			<input type="number" id="numPerLine" class="border-2 border-gray-300 rounded-lg text-center" min="1"
+				max="20" placeholder="Numbers per line" value="6">
+			<label>numbers</label>
+		</div>
+		<div class="mb-4">
+			<p>Using the following numbers</p>
+			<div id="numberGrid" class="grid grid-cols-5 gap-2.5 justify-center mx-auto p-4 bg-blue-600 rounded-lg"
+				style="max-width: 370px;">
+				<!-- Dynamically generated number elements -->
+			</div>
+		</div>
+		<div id="selectedNumbersBox" class="p-4 bg-green-200 rounded-lg mb-4">
+			<h3 class="font-bold">Selected Numbers:</h3>
+			<p id="selectedNumbers">None</p>
+		</div>
+		<button id="generateButton"
+			class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Generate</button>
+		<button id="clearButton"
+			class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Clear</button>
+	</div>
+	<hr>
+	<div id="resultSection" class="text-center p-4">
+		<h2 class="font-bold text-lg mb-4">Generated Lines</h2>
+		<div id="numbersContainer" class="p-4 bg-blue-600 rounded-lg mx-auto text-white" style="max-width: 370px;">
+			None
+			<!-- Dynamically generated number elements will be styled similarly to the selected numbers -->
+		</div>
+	</div>
+	<script src="assets/app.js"></script>
+</body>
+
+</html>
