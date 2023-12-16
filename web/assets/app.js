@@ -68,10 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 });
-// Ensure the clear button event listener is added after the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("clearButton").onclick = clearSelectedNumbers;
-});
+// Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
+// This code block is removed as it is now redundant
 
 function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
