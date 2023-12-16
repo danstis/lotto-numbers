@@ -41,10 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function clearSelectedNumbers() {
     selectedNumbers.length = 0; // Clear the array
     updateDisplay();
-    const numberElements = numberGrid.getElementsByClassName("selected");
-    while (numberElements.length) {
-      numberElements[0].classList.remove("selected");
-    }
+    // Use a different approach to remove the 'selected' class from all elements
+    const numberElements = numberGrid.querySelectorAll(".selected");
+    numberElements.forEach(function(element) {
+      element.classList.remove("selected");
+    });
   }
 
   document.getElementById("generateButton").onclick = function () {
@@ -67,8 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 });
-// Add event listener to the clear button
-document.getElementById("clearButton").onclick = clearSelectedNumbers;
+// Ensure the clear button event listener is added after the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clearButton").onclick = clearSelectedNumbers;
+});
 
 function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
