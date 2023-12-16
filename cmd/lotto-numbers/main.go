@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/danstis/lotto-numbers/internal/handlers" // Import the handlers package
 	"github.com/danstis/lotto-numbers/internal/version"
@@ -17,9 +18,15 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/lottery-numbers", handlers.GetLotteryNumbers).Methods("GET")
 
+	// Retrieve the port number from an environment variable or use 8080 as default
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	// Start the server
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	log.Printf("Starting server on :%s", port)
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatal("ListenAndServe error: ", err)
 	}
 }
