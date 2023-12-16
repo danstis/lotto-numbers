@@ -7,8 +7,11 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    environment: fly.io
     permissions:
       contents: write
+      discussions: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,11 +38,14 @@ jobs:
         with:
           go-version: ^1.20
         id: go
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        if: ${{ steps.gitversion.outputs.PreReleaseTagWithDash == '' }}
+      - name: Create Release
+        uses: softprops/action-gh-release@v0.1.15 # https://github.com/marketplace/actions/gh-release
         with:
-          version: latest
-          args: release --clean
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: v${{ steps.gitversion.outputs.FullSemVer }}
+          discussion_category_name: Announcements
+          generate_release_notes: true
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
