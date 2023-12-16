@@ -1,18 +1,21 @@
 .number-grid {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	/* Adjust the number of columns as needed */
+	grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+	justify-content: center;
 	gap: 10px;
 }
 
 .number {
 	background-color: #007bff;
 	color: white;
-	padding: 20px;
-	text-align: center;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 	border-radius: 50%;
-	/* Gives a circular shape */
+	/* Ensures a circular shape */
 }
 
 .selected {
