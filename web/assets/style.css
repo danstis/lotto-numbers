@@ -1,6 +1,7 @@
 
 .selected {
 	background-color: #ffc107;
+	color: #000000;
 	/* Highlight color for selected numbers */
 }
 #selectedNumbersBox {
@@ -28,7 +29,7 @@
   margin: 0.125rem; /* Small margin for spacing */
 }
 #resultSection {
-	background-color: #fdd9de; /* A light red background color */
+	background-color: #E4DCE4; /* A light red background color */
 	border-radius: 0.5rem; /* Rounded corners */
 	padding: 1rem; /* Padding around the content */
 	margin-bottom: 1rem; /* Margin at the bottom */
