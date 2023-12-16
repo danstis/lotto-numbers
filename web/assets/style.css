@@ -8,6 +8,9 @@
 	border-radius: 0.5rem; /* Rounded corners */
 	padding: 1rem; /* Padding around the content */
 	margin-bottom: 1rem; /* Margin at the bottom */
+	max-width: 370px; /* Match the width of the number grid */
+	margin-left: auto; /* Center the box */
+	margin-right: auto; /* Center the box */
 }
 
 #selectedNumbersBox h3 {
