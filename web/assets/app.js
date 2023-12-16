@@ -90,7 +90,14 @@ function displayNumbers(data) {
 
   data.lines.forEach((line, index) => {
     const lineElem = document.createElement("div");
-    lineElem.textContent = `Line ${index + 1}: ${line.join(", ")}`;
+    lineElem.classList.add("mb-2");
+    lineElem.textContent = `Line ${index + 1}:`;
+    line.forEach(number => {
+      const numberElement = document.createElement("div");
+      numberElement.textContent = number;
+      numberElement.classList.add("generated-number-circle", "inline-block");
+      lineElem.appendChild(numberElement);
+    });
     container.appendChild(lineElem);
   });
 }
