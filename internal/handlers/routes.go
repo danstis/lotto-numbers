@@ -12,9 +12,6 @@ func SetupRoutes(r *mux.Router) {
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, webDir+"/index.html")
 	})
-	r.HandleFunc("/numbers", GetLotteryNumbers).Methods("GET")
-	// r.HandleFunc("/assets/app.js", func(w http.ResponseWriter, r *http.Request) {
-	// 	fmt.Fprintln(w, "App.js route hit")
-	// })
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(webDir+"/assets"))))
+	r.HandleFunc("/numbers", GetLotteryNumbers).Methods("GET")
 }
