@@ -7,7 +7,7 @@ document
     let numbers = document.getElementById("numbers").value;
 
     // Construct the API URL
-    let apiUrl = `https://lotto-numbers.fly.dev/numbers?lines=${numLines}&numPerLine=${numPerLine}&numbersList=${numbers}`;
+    let apiUrl = `./numbers?lines=${numLines}&numPerLine=${numPerLine}&numbersList=${numbers}`;
 
     // Fetch data from the API
     fetch(apiUrl)
