@@ -1,0 +1,21 @@
+.number-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	/* Adjust the number of columns as needed */
+	gap: 10px;
+}
+
+.number {
+	background-color: #007bff;
+	color: white;
+	padding: 20px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 50%;
+	/* Gives a circular shape */
+}
+
+.selected {
+	background-color: #ffc107;
+	/* Highlight color for selected numbers */
+}
