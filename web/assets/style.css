@@ -60,3 +60,6 @@
 	background-color: #e2e8f0; /* Color of the divider */
 	margin: 0.5rem 0; /* Vertical spacing around the divider */
 }
+body {
+	color: #0B2027; /* Update the default text color */
+}
