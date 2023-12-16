@@ -44,7 +44,9 @@
 }
 
 .generated-number-circle {
-	display: inline-block; /* Change to inline-block for wrapping */
+	display: inline-flex; /* Use inline-flex to enable flexbox properties */
+	align-items: center; /* Center vertically */
+	justify-content: center; /* Center horizontally */
 	width: 2.5rem; /* Same width as number grid circles */
 	height: 2.5rem; /* Same height as number grid circles */
 	background-color: #4299e1; /* Same background color as number grid circles */
