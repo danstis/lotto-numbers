@@ -24,10 +24,10 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 		for _, numStr := range strings.Split(numbersParam[0], ",") {
 			num, err := strconv.Atoi(strings.TrimSpace(numStr))
 			if err != nil {
-				// If there's an error, log it and use the default numbersList
+				// If there's an error, log it, send a bad request status, and stop processing
 				log.Printf("Error parsing numbersList: %v", err)
-				parsedNumbersList = nil
-				break
+				http.Error(w, "Bad request: invalid numbersList parameter", http.StatusBadRequest)
+				return
 			}
 			parsedNumbersList = append(parsedNumbersList, num)
 		}
