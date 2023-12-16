@@ -121,3 +121,15 @@ func TestGenerateLotteryNumbers_NoDuplicatesInLine(t *testing.T) {
 		}
 	}
 }
+
+func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
+	numbersList := []int{1, 2, 3} // Only 3 numbers available
+	lines := 2
+	numPerLine := 5 // Requires 5 numbers per line
+
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+
+	if generatedNumbers != nil {
+		t.Errorf("Expected nil, got %v", generatedNumbers)
+	}
+}
