@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clearButton").onclick = clearSelectedNumbers;
   const numberGrid = document.getElementById("numberGrid");
   const selectedNumbers = [];
 
