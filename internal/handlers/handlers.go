@@ -60,5 +60,9 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 
 	// Set the Content-Type header and encode the LotteryNumbers struct to JSON
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(numbers)
+	if err := json.NewEncoder(w).Encode(numbers); err != nil {
+		log.Printf("Error encoding response: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }
