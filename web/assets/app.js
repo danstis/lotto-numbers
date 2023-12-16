@@ -37,6 +37,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to handle generate button click
+  // Function to clear selected numbers
+  function clearSelectedNumbers() {
+    selectedNumbers.length = 0; // Clear the array
+    updateDisplay();
+    const numberElements = numberGrid.getElementsByClassName("selected");
+    while (numberElements.length) {
+      numberElements[0].classList.remove("selected");
+    }
+  }
+
   document.getElementById("generateButton").onclick = function () {
     // Construct the API URL
     let numbersJoined = selectedNumbers.join(", ");
@@ -57,6 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   };
 });
+// Add event listener to the clear button
+document.getElementById("clearButton").onclick = clearSelectedNumbers;
 
 function displayNumbers(data) {
   const container = document.getElementById("numbersContainer");
