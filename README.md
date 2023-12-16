@@ -16,3 +16,7 @@ Projects should follow the folder structure from this standard project layout: [
 ## Commit message style
 
 This repo uses [Conventional Commits](https://www.conventionalcommits.org/) to ensure the build numbering is generated correctly
+
+## Deployment
+
+This project is hosted on fly.io. To perform deployments locally, install the flyctl app from here [Install flyctl](https://fly.io/docs/hands-on/install-flyctl/).
