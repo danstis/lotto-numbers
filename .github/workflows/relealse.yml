@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   release:
     name: Release
@@ -15,6 +19,7 @@ jobs:
       contents: write
       discussions: write
       id-token: write
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,17 +35,49 @@ jobs:
         run: |
           echo "::notice::FullSemVer ${{ steps.gitversion.outputs.FullSemVer }}"
           echo "::notice::PreReleaseTagWithDash ${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Log in to the Container registry # https://github.com/marketplace/actions/docker-login
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Define the main image tag
+        id: definetag
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "::set-output name=currenttag::latest"
+            echo "::set-output name=prerelease::false"
+          elif [[ "${{ steps.gitversion.outputs.PreReleaseTagWithDash }}" != "" ]]; then
+            echo "::set-output name=currenttag::beta"
+            echo "::set-output name=prerelease::true"
+          else
+            echo "::set-output name=currenttag::${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
+            echo "::set-output name=prerelease::true"
+          fi
+      - name: Build and push # https://github.com/marketplace/actions/build-and-push-docker-images
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./deploy/dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.definetag.outputs.currenttag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.major }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.semVer }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}
+          build-args: |
+            BUILD=${{ steps.gitversion.outputs.semVer }}
       - name: Bump version and push tag # https://github.com/marketplace/actions/github-tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.gitversion.outputs.FullSemVer }}
           tag_prefix: v
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version: ^1.20
-        id: go
       - name: Create Release
         uses: softprops/action-gh-release@v0.1.15 # https://github.com/marketplace/actions/gh-release
         with:
@@ -48,7 +85,9 @@ jobs:
           tag_name: v${{ steps.gitversion.outputs.FullSemVer }}
           discussion_category_name: Announcements
           generate_release_notes: true
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+          prerelease: ${{ steps.definetag.outputs.prerelease }}
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

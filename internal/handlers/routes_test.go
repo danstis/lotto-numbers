@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,7 +11,8 @@ import (
 
 func TestRoutes(t *testing.T) {
 	r := mux.NewRouter()
-	SetupRoutes(r)
+	ctx := context.Background()
+	SetupRoutes(ctx, r)
 
 	tests := []struct {
 		method       string

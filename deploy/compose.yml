@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: deploy/dockerfile
+    image: ghcr.io/danstis/lotto-numbers:latest
+    env_file:
+      - ../.env
+    environment:
+      ENVIRONMENT: development
+      PORT: "8080"
+      TZ: Australia/Brisbane
+    restart: always
+    ports:
+      - 8092:8080
