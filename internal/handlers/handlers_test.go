@@ -88,6 +88,14 @@ func TestGetLotteryNumbers(t *testing.T) {
 			wantNumPerLine: 0,
 			wantSubset:     nil,
 		},
+		{
+			name:           "Insufficient numbers for numPerLine",
+			query:          "?numbersList=1,2,3&numPerLine=4",
+			wantStatusCode: http.StatusInternalServerError,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
 	}
 
 	for _, tc := range tests {
