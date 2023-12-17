@@ -4,27 +4,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
-	"time"
 
-	"github.com/danstis/lotto-numbers/internal/handlers" // Import the handlers package
+	"github.com/danstis/lotto-numbers/internal/handlers"
+	"github.com/danstis/lotto-numbers/internal/middleware"
 	"github.com/danstis/lotto-numbers/internal/version"
 	"github.com/gorilla/mux"
 )
-
-// loggingMiddleware defines the middleware for logging HTTP requests.
-func loggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		startTime := time.Now() // Capture the start time
-		next.ServeHTTP(w, r)
-		duration := time.Since(startTime) // Calculate the duration
-
-		// Log the request details with the time taken to serve the page, without the port number
-		ipAddress := strings.Split(r.RemoteAddr, ":")[0]
-		log.Printf("Request from %s: %s %s, Duration: %v",
-			ipAddress, r.Method, r.URL.Path, duration)
-	})
-}
 
 // Main entry point for the app.
 func main() {
@@ -34,7 +19,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Wrap the router with the logging middleware
-	r.Use(loggingMiddleware)
+	r.Use(middleware.LoggingMiddleware)
 
 	handlers.SetupRoutes(r)
 
