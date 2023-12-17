@@ -126,15 +126,28 @@ document.addEventListener("DOMContentLoaded", function () {
         divider.classList.add("line-divider");
         container.appendChild(divider);
       }
+
+      const lineContainer = document.createElement("div");
+      lineContainer.classList.add("line-container", "flex", "items-center", "mb-2");
+
+      // Create and append line number element
+      const lineNumberElem = document.createElement("div");
+      lineNumberElem.textContent = `#${index + 1}`;
+      lineNumberElem.classList.add("line-number");
+      lineContainer.appendChild(lineNumberElem);
+
+      // Create and append line numbers
       const lineElem = document.createElement("div");
-      lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
+      lineElem.classList.add("flex", "flex-wrap", "justify-center");
       line.forEach((number) => {
         const numberElement = document.createElement("div");
         numberElement.textContent = number;
         numberElement.classList.add("generated-number-circle");
         lineElem.appendChild(numberElement);
       });
-      container.appendChild(lineElem);
+      lineContainer.appendChild(lineElem);
+
+      container.appendChild(lineContainer);
     });
   }
 
