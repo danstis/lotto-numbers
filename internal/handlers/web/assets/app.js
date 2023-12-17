@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("clearButton").onclick = clearSelectedNumbers;
-  const numberGrid = document.getElementById("numberGrid");
   const selectedNumbers = [];
+  initializeNumberGrid(selectedNumbers);
+  setupGenerateButton(selectedNumbers);
 
   // Function to toggle selection
   function toggleNumberSelection(number) {
@@ -37,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDisplay();
   }
 
-  // Initialize the number grid
+function initializeNumberGrid(selectedNumbers) {
+  const numberGrid = document.getElementById("numberGrid");
   for (let i = 1; i <= 40; i++) {
     const numberElement = document.createElement("div");
     numberElement.textContent = i;
@@ -53,9 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
       "rounded-full",
       "mx-auto"
     );
-    numberElement.onclick = handleNumberClick;
+    numberElement.onclick = function(event) {
+      handleNumberClick(event, selectedNumbers);
+    };
     numberGrid.appendChild(numberElement);
   }
+}
 
   // Function to handle generate button click
   // Function to clear selected numbers and generated lines
@@ -72,34 +77,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+function setupGenerateButton(selectedNumbers) {
   document.getElementById("generateButton").onclick = function () {
-    // Construct the API URL
-    let numLinesValue = document.getElementById("numLines").value;
-    let numPerLineValue = document.getElementById("numPerLine").value;
-    let numbersJoined = selectedNumbers.join(",");
-    let apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
 
-    // Fetch data from the API
-    fetch(apiUrl)
-      .then(response => {
-        if (!response.ok) {
-          if (response.headers.get("Content-Type").includes("text/plain")) {
-            return response.text().then(text => { throw new Error(text); });
-          } else {
-            return response.json().then(data => { throw new Error(data.message || `HTTP error! status: ${response.status}`); });
-          }
-        }
-        return response.json();
-      })
-      .then(data => {
-        displayNumbers(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        displayError(error.toString().replace('Error: ', ''));
-      });
+    const numLinesValue = document.getElementById("numLines").value;
+    const numPerLineValue = document.getElementById("numPerLine").value;
+    const numbersJoined = selectedNumbers.join(",");
+    const apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
+
+    fetchNumbers(apiUrl);
   };
-});
+}
+
+function fetchNumbers(apiUrl) {
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        if (response.headers.get("Content-Type").includes("text/plain")) {
+          return response.text().then(text => { throw new Error(text); });
+        } else {
+          return response.json().then(data => { throw new Error(data.message || `HTTP error! status: ${response.status}`); });
+        }
+      }
+      return response.json();
+    })
+    .then(data => {
+      displayNumbers(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      displayError(error.toString().replace('Error: ', ''));
+    });
+}
 // Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
 // This code block is removed as it is now redundant
 
