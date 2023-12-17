@@ -4,6 +4,9 @@
 		"projectKey": "danstis_lotto-numbers"
 	},
 	"cSpell.words": [
-		"Elem"
+		"contrib",
+		"Elem",
+		"otel",
+		"otelmux"
 	]
 }

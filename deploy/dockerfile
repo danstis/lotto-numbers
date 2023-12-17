@@ -18,7 +18,8 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 COPY --from=builder /app/* ./
 COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
-ENV PORT="$PORT" \
+ENV ENVIRONMENT="development" \
+	PORT="$PORT" \
 	UPTRACE_DSN="" \
 	TZ=Australia/Brisbane \
 	ZONEINFO=/zoneinfo.zip

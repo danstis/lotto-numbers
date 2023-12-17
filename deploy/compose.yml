@@ -9,6 +9,7 @@ services:
     env_file:
       - ../.env
     environment:
+      ENVIRONMENT: development
       PORT: "8080"
       TZ: Australia/Brisbane
     restart: always

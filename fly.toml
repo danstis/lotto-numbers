@@ -10,6 +10,7 @@ primary_region = "syd"
 image = "ghcr.io/danstis/lotto-numbers:latest"
 
 [env]
+ENVIRONMENT = "production"
 PORT = "8080"
 
 [http_service]
