@@ -86,8 +86,9 @@ func TestGetLotteryNumbers(t *testing.T) {
 
 			assert.Equal(t, tc.wantStatusCode, rr.Code, "handler returned wrong status code")
 			// For the invalid numbers list, we expect a plain text error message, not a JSON response
-			if tc.name == "Invalid numbers list" {
+			if tc.wantStatusCode != http.StatusOK {
 				assert.Equal(t, "text/plain; charset=utf-8", rr.Header().Get("Content-Type"), "content type is not text/plain; charset=utf-8")
+				assert.Contains(t, rr.Body.String(), "Invalid input", "response body should contain 'Invalid input'")
 			} else {
 				assert.Equal(t, "application/json", rr.Header().Get("Content-Type"), "content type is not application/json")
 
