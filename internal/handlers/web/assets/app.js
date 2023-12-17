@@ -38,29 +38,29 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDisplay();
   }
 
-function initializeNumberGrid(selectedNumbers) {
-  const numberGrid = document.getElementById("numberGrid");
-  for (let i = 1; i <= 40; i++) {
-    const numberElement = document.createElement("div");
-    numberElement.textContent = i;
-    numberElement.dataset.number = i;
-    numberElement.classList.add(
-      "w-10",
-      "h-10",
-      "bg-blue-500",
-      "text-white",
-      "flex",
-      "items-center",
-      "justify-center",
-      "rounded-full",
-      "mx-auto"
-    );
-    numberElement.onclick = function(event) {
-      handleNumberClick(event, selectedNumbers);
-    };
-    numberGrid.appendChild(numberElement);
+  function initializeNumberGrid(selectedNumbers) {
+    const numberGrid = document.getElementById("numberGrid");
+    for (let i = 1; i <= 40; i++) {
+      const numberElement = document.createElement("div");
+      numberElement.textContent = i;
+      numberElement.dataset.number = i;
+      numberElement.classList.add(
+        "w-10",
+        "h-10",
+        "bg-blue-500",
+        "text-white",
+        "flex",
+        "items-center",
+        "justify-center",
+        "rounded-full",
+        "mx-auto"
+      );
+      numberElement.onclick = function (event) {
+        handleNumberClick(event, selectedNumbers);
+      };
+      numberGrid.appendChild(numberElement);
+    }
   }
-}
 
   // Function to handle generate button click
   // Function to clear selected numbers and generated lines
@@ -77,65 +77,71 @@ function initializeNumberGrid(selectedNumbers) {
     });
   }
 
-function setupGenerateButton(selectedNumbers) {
-  document.getElementById("generateButton").onclick = function () {
+  function setupGenerateButton(selectedNumbers) {
+    document.getElementById("generateButton").onclick = function () {
+      const numLinesValue = document.getElementById("numLines").value;
+      const numPerLineValue = document.getElementById("numPerLine").value;
+      const numbersJoined = selectedNumbers.join(",");
+      const apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
 
-    const numLinesValue = document.getElementById("numLines").value;
-    const numPerLineValue = document.getElementById("numPerLine").value;
-    const numbersJoined = selectedNumbers.join(",");
-    const apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
+      fetchNumbers(apiUrl);
+    };
+  }
 
-    fetchNumbers(apiUrl);
-  };
-}
-
-function fetchNumbers(apiUrl) {
-  fetch(apiUrl)
-    .then(response => {
-      if (!response.ok) {
-        if (response.headers.get("Content-Type").includes("text/plain")) {
-          return response.text().then(text => { throw new Error(text); });
-        } else {
-          return response.json().then(data => { throw new Error(data.message || `HTTP error! status: ${response.status}`); });
+  function fetchNumbers(apiUrl) {
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          if (response.headers.get("Content-Type").includes("text/plain")) {
+            return response.text().then((text) => {
+              throw new Error(text);
+            });
+          } else {
+            return response.json().then((data) => {
+              throw new Error(
+                data.message || `HTTP error! status: ${response.status}`
+              );
+            });
+          }
         }
+        return response.json();
+      })
+      .then((data) => {
+        displayNumbers(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        displayError(error.toString().replace("Error: ", ""));
+      });
+  }
+  // Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
+  // This code block is removed as it is now redundant
+
+  function displayNumbers(data) {
+    const container = document.getElementById("numbersContainer");
+    container.innerHTML = ""; // Clear previous results
+
+    data.lines.forEach((line, index) => {
+      if (index > 0) {
+        // Add a divider before each new line except the first
+        const divider = document.createElement("div");
+        divider.classList.add("line-divider");
+        container.appendChild(divider);
       }
-      return response.json();
-    })
-    .then(data => {
-      displayNumbers(data);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      displayError(error.toString().replace('Error: ', ''));
+      const lineElem = document.createElement("div");
+      lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
+      line.forEach((number) => {
+        const numberElement = document.createElement("div");
+        numberElement.textContent = number;
+        numberElement.classList.add("generated-number-circle");
+        lineElem.appendChild(numberElement);
+      });
+      container.appendChild(lineElem);
     });
-}
-// Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
-// This code block is removed as it is now redundant
+  }
 
-function displayNumbers(data) {
-  const container = document.getElementById("numbersContainer");
-  container.innerHTML = ""; // Clear previous results
-
-  data.lines.forEach((line, index) => {
-    if (index > 0) {
-      // Add a divider before each new line except the first
-      const divider = document.createElement("div");
-      divider.classList.add("line-divider");
-      container.appendChild(divider);
-    }
-    const lineElem = document.createElement("div");
-    lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
-    line.forEach((number) => {
-      const numberElement = document.createElement("div");
-      numberElement.textContent = number;
-      numberElement.classList.add("generated-number-circle");
-      lineElem.appendChild(numberElement);
-    });
-    container.appendChild(lineElem);
-  });
-}
-
-function displayError(errorMessage) {
-  const container = document.getElementById("numbersContainer");
-  container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`;
-}
+  function displayError(errorMessage) {
+    const container = document.getElementById("numbersContainer");
+    container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`;
+  }
+});
