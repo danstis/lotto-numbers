@@ -127,50 +127,48 @@ func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
 
 	assert.Nil(t, generatedNumbers, "Expected nil, got %v", generatedNumbers)
 }
-func TestGenerateLotteryNumbers_ZeroLines(t *testing.T) {
-	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	lines := 0
-	numPerLine := 5
-
-	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
-
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
+func TestGenerateLotteryNumbers_InvalidInputs(t *testing.T) {
+	tests := []struct {
+		name        string
+		numbersList []int
+		lines       int
+		numPerLine  int
+		expected    [][]int
+	}{
+		{
+			name:        "Zero lines",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       0,
+			numPerLine:  5,
+			expected:    nil,
+		},
+		{
+			name:        "Negative lines",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       -1,
+			numPerLine:  5,
+			expected:    nil,
+		},
+		{
+			name:        "Negative numbers per line",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       3,
+			numPerLine:  -1,
+			expected:    nil,
+		},
+		{
+			name:        "Zero numbers per line",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       3,
+			numPerLine:  0,
+			expected:    nil,
+		},
 	}
-}
 
-func TestGenerateLotteryNumbers_NegativeLines(t *testing.T) {
-	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	lines := -1
-	numPerLine := 5
-
-	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
-
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
-	}
-}
-
-func TestGenerateLotteryNumbers_NegativeNumbersPerLine(t *testing.T) {
-	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	lines := 3
-	numPerLine := -1
-
-	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
-
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
-	}
-}
-
-func TestGenerateLotteryNumbers_ZeroNumbersPerLine(t *testing.T) {
-	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	lines := 3
-	numPerLine := 0
-
-	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
-
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			generatedNumbers := GetNumbers(tc.numbersList, tc.lines, tc.numPerLine)
+			assert.Equal(t, tc.expected, generatedNumbers)
+		})
 	}
 }
