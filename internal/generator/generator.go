@@ -17,8 +17,8 @@ import (
 // Returns:
 // A 2D slice of integers representing the generated lottery numbers.
 func GetNumbers(numbersList []int, lines, numPerLine int) [][]int {
-	if len(numbersList) < numPerLine || lines <= 0 {
-		return nil // Not enough numbers to generate a line or zero lines requested
+	if len(numbersList) < numPerLine || lines <= 0 || numPerLine <= 0 {
+		return nil // Not enough numbers to generate a line, zero lines requested, or non-positive numPerLine
 	}
 
 	lotteryNumbers := make([][]int, 0)
