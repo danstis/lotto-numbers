@@ -120,6 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = ""; // Clear previous results
 
     data.lines.forEach((line, index) => {
+      if (index > 0) {
+        // Add a divider before each new line except the first
+        const divider = document.createElement("div");
+        divider.classList.add("line-divider");
+        container.appendChild(divider);
+      }
+
       const lineContainer = document.createElement("div");
       lineContainer.classList.add("line-container", "flex", "items-center", "mb-2");
 
