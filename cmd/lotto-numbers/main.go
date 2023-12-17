@@ -12,25 +12,26 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// loggingMiddleware defines the middleware for logging HTTP requests.
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now() // Capture the start time
+		next.ServeHTTP(w, r)
+		duration := time.Since(startTime) // Calculate the duration
+
+		// Log the request details with the time taken to serve the page, without the port number
+		ipAddress := strings.Split(r.RemoteAddr, ":")[0]
+		log.Printf("Request from %s: %s %s, Duration: %v",
+			ipAddress, r.Method, r.URL.Path, duration)
+	})
+}
+
 // Main entry point for the app.
 func main() {
 	log.Printf("Lotto Numbers started - v%v", version.Version)
 
 	// Set up the HTTP server using Gorilla Mux
 	r := mux.NewRouter()
-	// Define the logging middleware with timing
-	loggingMiddleware := func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			startTime := time.Now() // Capture the start time
-			next.ServeHTTP(w, r)
-			duration := time.Since(startTime) // Calculate the duration
-
-			// Log the request details with the time taken to serve the page, without the port number
-			ipAddress := strings.Split(r.RemoteAddr, ":")[0]
-			log.Printf("Request from %s: %s %s, Duration: %v",
-				ipAddress, r.Method, r.URL.Path, duration)
-		})
-	}
 
 	// Wrap the router with the logging middleware
 	r.Use(loggingMiddleware)
