@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        displayError(error.toString());
+        displayError(error.toString().replace('Error: ', ''));
       });
   };
 });
@@ -126,7 +126,7 @@ function displayNumbers(data) {
   });
 }
 
-function displayError(error) {
+function displayError(errorMessage) {
   const container = document.getElementById("numbersContainer");
-  container.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+  container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`;
 }
