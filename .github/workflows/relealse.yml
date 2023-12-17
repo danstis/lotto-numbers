@@ -45,6 +45,16 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Define the main image tag
+        id: definetag
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "::set-output name=currenttag::latest"
+          elif [[ "${{ steps.gitversion.outputs.PreReleaseTagWithDash }}" != "" ]]; then
+            echo "::set-output name=currenttag::beta"
+          else
+            echo "::set-output name=currenttag::${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
+          fi
       - name: Build and push # https://github.com/marketplace/actions/build-and-push-docker-images
         uses: docker/build-push-action@v3
         with:
@@ -53,7 +63,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.definetag.outputs.currenttag }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.major }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.semVer }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}
