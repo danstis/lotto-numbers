@@ -6,6 +6,8 @@ services:
       context: ../
       dockerfile: deploy/dockerfile
     image: ghcr.io/danstis/lotto-numbers:latest
+    env_file:
+      - ../.env
     environment:
       PORT: "8080"
       TZ: Australia/Brisbane

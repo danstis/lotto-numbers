@@ -20,6 +20,7 @@ COPY --from=builder /app/* ./
 COPY ./web ./web
 COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
 ENV PORT="$PORT" \
+	UPTRACE_DSN="" \
 	TZ=Australia/Brisbane \
 	ZONEINFO=/zoneinfo.zip
 CMD [ "./lotto-numbers" ]
