@@ -81,17 +81,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch data from the API
     fetch(apiUrl)
-      .then(response => response.json().then(data => ({
-        status: response.status,
-        body: data
-      })))
-      .then(obj => {
-        if (obj.status !== 200) {
-          throw new Error(obj.body.message || `HTTP error! status: ${obj.status}`);
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        displayNumbers(obj.body);
+        return response.json();
       })
-      .then((data) => displayNumbers(data))
+      .then(data => {
+        if (!data || !data.lines) {
+          throw new Error('Invalid response data');
+        }
+        displayNumbers(data);
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
         displayError(error);
