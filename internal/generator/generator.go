@@ -17,14 +17,14 @@ import (
 // Returns:
 // A 2D slice of integers representing the generated lottery numbers.
 func GetNumbers(numbersList []int, lines, numPerLine int) [][]int {
-	if len(numbersList) < numPerLine {
-		return nil // Not enough numbers to generate a line
+	if len(numbersList) < numPerLine || lines <= 0 {
+		return nil // Not enough numbers to generate a line or zero lines requested
 	}
 
-	lotteryNumbers := make([][]int, 0, lines)
+	lotteryNumbers := make([][]int, 0)
 	linesMap := make(map[string]bool)
 	localRand := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for len(lotteryNumbers) < lines {
+	for i := 0; i < lines; i++ {
 		localRand.Shuffle(len(numbersList), func(i, j int) {
 			numbersList[i], numbersList[j] = numbersList[j], numbersList[i]
 		})
