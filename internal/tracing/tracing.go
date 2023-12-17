@@ -34,5 +34,11 @@ func SetupTracing() (trace.Tracer, func(ctx context.Context)) {
 
 	tracer := otel.Tracer("lotto-numbers")
 
-	return tracer, func(ctx context.Context) { uptrace.Shutdown(ctx) }
+	return tracer, func(ctx context.Context) {
+		err := uptrace.Shutdown(ctx)
+		if err != nil {
+			// handle error
+			log.Println(err)
+		}
+	}
 }
