@@ -28,4 +28,5 @@ _testmain.go
 .aider*
 
 # Other
+.env
 *.ignore*
