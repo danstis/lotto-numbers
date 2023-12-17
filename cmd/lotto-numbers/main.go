@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/danstis/lotto-numbers/internal/handlers" // Import the handlers package
