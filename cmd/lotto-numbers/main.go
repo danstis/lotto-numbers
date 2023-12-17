@@ -24,9 +24,10 @@ func main() {
 			next.ServeHTTP(w, r)
 			duration := time.Since(startTime) // Calculate the duration
 
-			// Log the request details with the time taken to serve the page
+			// Log the request details with the time taken to serve the page, without the port number
+			ipAddress := strings.Split(r.RemoteAddr, ":")[0]
 			log.Printf("Request from %s: %s %s, Duration: %v",
-				r.RemoteAddr, r.Method, r.URL.Path, duration)
+				ipAddress, r.Method, r.URL.Path, duration)
 		})
 	}
 
