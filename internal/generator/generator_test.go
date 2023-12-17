@@ -133,3 +133,50 @@ func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
 		t.Errorf("Expected nil, got %v", generatedNumbers)
 	}
 }
+func TestGenerateLotteryNumbers_ZeroLines(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	lines := 0
+	numPerLine := 5
+
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+
+	if generatedNumbers != nil {
+		t.Errorf("Expected nil, got %v", generatedNumbers)
+	}
+}
+
+func TestGenerateLotteryNumbers_NegativeLines(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	lines := -1
+	numPerLine := 5
+
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+
+	if generatedNumbers != nil {
+		t.Errorf("Expected nil, got %v", generatedNumbers)
+	}
+}
+
+func TestGenerateLotteryNumbers_NegativeNumbersPerLine(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	lines := 3
+	numPerLine := -1
+
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+
+	if generatedNumbers != nil {
+		t.Errorf("Expected nil, got %v", generatedNumbers)
+	}
+}
+
+func TestGenerateLotteryNumbers_ZeroNumbersPerLine(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	lines := 3
+	numPerLine := 0
+
+	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+
+	if generatedNumbers != nil {
+		t.Errorf("Expected nil, got %v", generatedNumbers)
+	}
+}
