@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/danstis/lotto-numbers/internal/handlers" // Import the handlers package
 	"github.com/danstis/lotto-numbers/internal/version"
@@ -28,7 +29,6 @@ func main() {
 				r.RemoteAddr, r.Method, r.URL.Path, duration)
 		})
 	}
-
 
 	// Wrap the router with the logging middleware
 	r.Use(loggingMiddleware)
