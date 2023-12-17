@@ -34,7 +34,7 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 
 	// Validate the parameters before calling the generator
 	if lines <= 0 || numPerLine <= 0 {
-		sendHTTPError(w, "Invalid input: 'lines' and 'numPerLine' must be positive integers", nil, http.StatusBadRequest)
+		sendHTTPError(w, "Invalid input: 'lines' and 'numPerLine' must be positive numbers", nil, http.StatusBadRequest)
 		return
 	}
 
