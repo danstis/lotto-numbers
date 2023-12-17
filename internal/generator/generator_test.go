@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGenerateLotteryNumbers_CorrectNumberOfLines(t *testing.T) {
@@ -13,9 +15,7 @@ func TestGenerateLotteryNumbers_CorrectNumberOfLines(t *testing.T) {
 
 	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
-	if len(generatedNumbers) != lines {
-		t.Errorf("Expected %d lines, got %d", lines, len(generatedNumbers))
-	}
+	assert.Equal(t, lines, len(generatedNumbers), "Expected %d lines, got %d", lines, len(generatedNumbers))
 }
 
 func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
@@ -25,14 +25,10 @@ func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
 
 	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
-	if len(generatedNumbers) == 0 {
-		t.Fatalf("No lines were generated, expected %d lines", lines)
-	}
+	assert.NotEmpty(t, generatedNumbers, "No lines were generated, expected %d lines", lines)
 
 	for _, line := range generatedNumbers {
-		if len(line) != numPerLine {
-			t.Fatalf("Expected %d numbers per line, got %d", numPerLine, len(line))
-		}
+		assert.Equal(t, numPerLine, len(line), "Expected %d numbers per line, got %d", numPerLine, len(line))
 	}
 }
 
@@ -129,9 +125,7 @@ func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
 
 	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
-	}
+	assert.Nil(t, generatedNumbers, "Expected nil, got %v", generatedNumbers)
 }
 func TestGenerateLotteryNumbers_ZeroLines(t *testing.T) {
 	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
