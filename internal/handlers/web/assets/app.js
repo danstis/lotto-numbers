@@ -55,9 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "rounded-full",
         "mx-auto"
       );
-      numberElement.onclick = function (event) {
-        handleNumberClick(event, selectedNumbers);
-      };
+      numberElement.onclick = handleNumberClick;
       numberGrid.appendChild(numberElement);
     }
   }
