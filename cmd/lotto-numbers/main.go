@@ -16,16 +16,18 @@ func main() {
 
 	// Set up the HTTP server using Gorilla Mux
 	r := mux.NewRouter()
-	// Define the logging middleware
+	// Define the logging middleware with timing
 	loggingMiddleware := func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			startTime := time.Now() // Capture the start time
 			// Wrap the ResponseWriter to capture the status code
 			wrapper := &statusResponseWriter{ResponseWriter: w}
 			next.ServeHTTP(wrapper, r)
+			duration := time.Since(startTime) // Calculate the duration
 
-			// Log the request details
-			log.Printf("Request from %s: %s %s, Response code: %d",
-				r.RemoteAddr, r.Method, r.URL.Path, wrapper.statusCode)
+			// Log the request details with the time taken to serve the page
+			log.Printf("Request from %s: %s %s, Response code: %d, Duration: %v",
+				r.RemoteAddr, r.Method, r.URL.Path, wrapper.statusCode, duration)
 		})
 	}
 
