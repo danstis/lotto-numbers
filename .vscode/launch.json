@@ -9,7 +9,8 @@
 			"type": "go",
 			"request": "launch",
 			"mode": "auto",
-			"program": "cmd/lotto-numbers/main.go"
+			"program": "cmd/lotto-numbers/main.go",
+			"envFile": "${workspaceFolder}/.env"
 		}
 	]
 }
