@@ -36,7 +36,7 @@ jobs:
           echo "::notice::FullSemVer ${{ steps.gitversion.outputs.FullSemVer }}"
           echo "::notice::PreReleaseTagWithDash ${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Log in to the Container registry # https://github.com/marketplace/actions/docker-login
