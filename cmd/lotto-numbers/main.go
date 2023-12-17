@@ -20,36 +20,15 @@ func main() {
 	loggingMiddleware := func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			startTime := time.Now() // Capture the start time
-			// Wrap the ResponseWriter to capture the status code
-			wrapper := &statusResponseWriter{ResponseWriter: w}
-			next.ServeHTTP(wrapper, r)
+			next.ServeHTTP(w, r)
 			duration := time.Since(startTime) // Calculate the duration
 
 			// Log the request details with the time taken to serve the page
-			log.Printf("Request from %s: %s %s, Response code: %d, Duration: %v",
-				r.RemoteAddr, r.Method, r.URL.Path, wrapper.statusCode, duration)
+			log.Printf("Request from %s: %s %s, Duration: %v",
+				r.RemoteAddr, r.Method, r.URL.Path, duration)
 		})
 	}
 
-	// Create a new type that wraps http.ResponseWriter to capture the status code
-	type statusResponseWriter struct {
-		http.ResponseWriter
-		statusCode int
-	}
-
-	// Override the WriteHeader method to capture the status code
-	func (w *statusResponseWriter) WriteHeader(code int) {
-		w.statusCode = code
-		w.ResponseWriter.WriteHeader(code)
-	}
-
-	// Initialize the status code with 200 in case WriteHeader is not called
-	func (w *statusResponseWriter) Write(b []byte) (int, error) {
-		if w.statusCode == 0 {
-			w.statusCode = http.StatusOK
-		}
-		return w.ResponseWriter.Write(b)
-	}
 
 	// Wrap the router with the logging middleware
 	r.Use(loggingMiddleware)
