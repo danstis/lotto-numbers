@@ -56,6 +56,22 @@ func TestGetLotteryNumbers(t *testing.T) {
 			wantLines:      5,
 			wantNumPerLine: 5,
 		},
+		{
+			name:           "Non-positive lines parameter",
+			query:          "?lines=0",
+			wantStatusCode: http.StatusBadRequest,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
+		{
+			name:           "Non-positive numPerLine parameter",
+			query:          "?numPerLine=0",
+			wantStatusCode: http.StatusBadRequest,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
 	}
 
 	for _, tc := range tests {
