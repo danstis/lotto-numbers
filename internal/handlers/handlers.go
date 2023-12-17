@@ -32,8 +32,18 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	lines := parseQueryParamInt(r, "lines", 5)
 	numPerLine := parseQueryParamInt(r, "numPerLine", 6)
 
-	// Call the generateLotteryNumbers function with the defined parameters
+	// Validate the parameters before calling the generator
+	if lines <= 0 || numPerLine <= 0 {
+		sendHTTPError(w, "Invalid input: 'lines' and 'numPerLine' must be positive numbers", nil, http.StatusBadRequest)
+		return
+	}
+
+	// Call the generateLotteryNumbers function with the validated parameters
 	generatedNumbers := generator.GetNumbers(numbersList, lines, numPerLine)
+	if generatedNumbers == nil {
+		sendHTTPError(w, "Error generating numbers: ensure the 'numbersList' contains enough unique numbers", nil, http.StatusInternalServerError)
+		return
+	}
 
 	// Create a LotteryNumbers struct with the generated numbers
 	numbers := models.LotteryNumbers{

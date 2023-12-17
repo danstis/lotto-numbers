@@ -38,9 +38,9 @@ func TestGetLotteryNumbers(t *testing.T) {
 			name:           "Invalid numbers list",
 			query:          "?numbersList=invalid",
 			wantStatusCode: http.StatusBadRequest, // Expecting a bad request status when numbersList is invalid
-			wantLines:      0, // When there's an error, no lines should be returned
-			wantNumPerLine: 0, // When there's an error, numPerLine should be irrelevant
-			wantSubset:     nil, // No subset should be expected on error
+			wantLines:      0,                     // When there's an error, no lines should be returned
+			wantNumPerLine: 0,                     // When there's an error, numPerLine should be irrelevant
+			wantSubset:     nil,                   // No subset should be expected on error
 		},
 		{
 			name:           "Valid lines parameter",
@@ -56,6 +56,46 @@ func TestGetLotteryNumbers(t *testing.T) {
 			wantLines:      5,
 			wantNumPerLine: 5,
 		},
+		{
+			name:           "Non-positive lines parameter",
+			query:          "?lines=0",
+			wantStatusCode: http.StatusBadRequest,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
+		{
+			name:           "Non-positive numPerLine parameter",
+			query:          "?numPerLine=0",
+			wantStatusCode: http.StatusBadRequest,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
+		{
+			name:           "Not enough numbers for numPerLine",
+			query:          "?numbersList=1,2,3&numPerLine=5",
+			wantStatusCode: http.StatusInternalServerError,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
+		{
+			name:           "Zero lines requested",
+			query:          "?lines=0",
+			wantStatusCode: http.StatusInternalServerError,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
+		{
+			name:           "Insufficient numbers for numPerLine",
+			query:          "?numbersList=1,2,3&numPerLine=4",
+			wantStatusCode: http.StatusInternalServerError,
+			wantLines:      0,
+			wantNumPerLine: 0,
+			wantSubset:     nil,
+		},
 	}
 
 	for _, tc := range tests {
@@ -70,8 +110,9 @@ func TestGetLotteryNumbers(t *testing.T) {
 
 			assert.Equal(t, tc.wantStatusCode, rr.Code, "handler returned wrong status code")
 			// For the invalid numbers list, we expect a plain text error message, not a JSON response
-			if tc.name == "Invalid numbers list" {
+			if tc.wantStatusCode != http.StatusOK {
 				assert.Equal(t, "text/plain; charset=utf-8", rr.Header().Get("Content-Type"), "content type is not text/plain; charset=utf-8")
+				assert.Contains(t, rr.Body.String(), "Bad request", "response body should contain 'Bad request'")
 			} else {
 				assert.Equal(t, "application/json", rr.Header().Get("Content-Type"), "content type is not application/json")
 

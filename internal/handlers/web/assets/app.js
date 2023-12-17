@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("clearButton").onclick = clearSelectedNumbers;
-  const numberGrid = document.getElementById("numberGrid");
   const selectedNumbers = [];
+  initializeNumberGrid(selectedNumbers);
+  setupGenerateButton(selectedNumbers);
 
   // Function to toggle selection
   function toggleNumberSelection(number) {
@@ -37,24 +38,26 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDisplay();
   }
 
-  // Initialize the number grid
-  for (let i = 1; i <= 40; i++) {
-    const numberElement = document.createElement("div");
-    numberElement.textContent = i;
-    numberElement.dataset.number = i;
-    numberElement.classList.add(
-      "w-10",
-      "h-10",
-      "bg-blue-500",
-      "text-white",
-      "flex",
-      "items-center",
-      "justify-center",
-      "rounded-full",
-      "mx-auto"
-    );
-    numberElement.onclick = handleNumberClick;
-    numberGrid.appendChild(numberElement);
+  function initializeNumberGrid(selectedNumbers) {
+    const numberGrid = document.getElementById("numberGrid");
+    for (let i = 1; i <= 40; i++) {
+      const numberElement = document.createElement("div");
+      numberElement.textContent = i;
+      numberElement.dataset.number = i;
+      numberElement.classList.add(
+        "w-10",
+        "h-10",
+        "bg-blue-500",
+        "text-white",
+        "flex",
+        "items-center",
+        "justify-center",
+        "rounded-full",
+        "mx-auto"
+      );
+      numberElement.onclick = handleNumberClick;
+      numberGrid.appendChild(numberElement);
+    }
   }
 
   // Function to handle generate button click
@@ -72,55 +75,71 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  document.getElementById("generateButton").onclick = function () {
-    // Construct the API URL
-    let numLinesValue = document.getElementById("numLines").value;
-    let numPerLineValue = document.getElementById("numPerLine").value;
-    let numbersJoined = selectedNumbers.join(",");
-    let apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
+  function setupGenerateButton(selectedNumbers) {
+    document.getElementById("generateButton").onclick = function () {
+      const numLinesValue = document.getElementById("numLines").value;
+      const numPerLineValue = document.getElementById("numPerLine").value;
+      const numbersJoined = selectedNumbers.join(",");
+      const apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`;
 
-    // Fetch data from the API
+      fetchNumbers(apiUrl);
+    };
+  }
+
+  function fetchNumbers(apiUrl) {
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          if (response.headers.get("Content-Type").includes("text/plain")) {
+            return response.text().then((text) => {
+              throw new Error(text);
+            });
+          } else {
+            return response.json().then((data) => {
+              throw new Error(
+                data.message || `HTTP error! status: ${response.status}`
+              );
+            });
+          }
         }
         return response.json();
       })
-      .then((data) => displayNumbers(data))
+      .then((data) => {
+        displayNumbers(data);
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        displayError(error);
+        displayError(error.toString().replace("Error: ", ""));
       });
-  };
-});
-// Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
-// This code block is removed as it is now redundant
+  }
+  // Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
+  // This code block is removed as it is now redundant
 
-function displayNumbers(data) {
-  const container = document.getElementById("numbersContainer");
-  container.innerHTML = ""; // Clear previous results
+  function displayNumbers(data) {
+    const container = document.getElementById("numbersContainer");
+    container.innerHTML = ""; // Clear previous results
 
-  data.lines.forEach((line, index) => {
-    if (index > 0) {
-      // Add a divider before each new line except the first
-      const divider = document.createElement("div");
-      divider.classList.add("line-divider");
-      container.appendChild(divider);
-    }
-    const lineElem = document.createElement("div");
-    lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
-    line.forEach((number) => {
-      const numberElement = document.createElement("div");
-      numberElement.textContent = number;
-      numberElement.classList.add("generated-number-circle");
-      lineElem.appendChild(numberElement);
+    data.lines.forEach((line, index) => {
+      if (index > 0) {
+        // Add a divider before each new line except the first
+        const divider = document.createElement("div");
+        divider.classList.add("line-divider");
+        container.appendChild(divider);
+      }
+      const lineElem = document.createElement("div");
+      lineElem.classList.add("flex", "flex-wrap", "justify-center", "mb-2");
+      line.forEach((number) => {
+        const numberElement = document.createElement("div");
+        numberElement.textContent = number;
+        numberElement.classList.add("generated-number-circle");
+        lineElem.appendChild(numberElement);
+      });
+      container.appendChild(lineElem);
     });
-    container.appendChild(lineElem);
-  });
-}
+  }
 
-function displayError(error) {
-  const container = document.getElementById("numbersContainer");
-  container.innerHTML = `<div class="error">Error: ${error.message}</div>`;
-}
+  function displayError(errorMessage) {
+    const container = document.getElementById("numbersContainer");
+    container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`;
+  }
+});

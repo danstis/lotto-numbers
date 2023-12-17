@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGenerateLotteryNumbers_CorrectNumberOfLines(t *testing.T) {
@@ -13,9 +15,7 @@ func TestGenerateLotteryNumbers_CorrectNumberOfLines(t *testing.T) {
 
 	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
-	if len(generatedNumbers) != lines {
-		t.Errorf("Expected %d lines, got %d", lines, len(generatedNumbers))
-	}
+	assert.Equal(t, lines, len(generatedNumbers), "Expected %d lines, got %d", lines, len(generatedNumbers))
 }
 
 func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
@@ -25,14 +25,10 @@ func TestGenerateLotteryNumbers_CorrectNumbersPerLine(t *testing.T) {
 
 	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
 
-	if len(generatedNumbers) == 0 {
-		t.Fatalf("No lines were generated, expected %d lines", lines)
-	}
+	assert.NotEmpty(t, generatedNumbers, "No lines were generated, expected %d lines", lines)
 
 	for _, line := range generatedNumbers {
-		if len(line) != numPerLine {
-			t.Fatalf("Expected %d numbers per line, got %d", numPerLine, len(line))
-		}
+		assert.Equal(t, numPerLine, len(line), "Expected %d numbers per line, got %d", numPerLine, len(line))
 	}
 }
 
@@ -123,13 +119,78 @@ func TestGenerateLotteryNumbers_NoDuplicatesInLine(t *testing.T) {
 }
 
 func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
-	numbersList := []int{1, 2, 3} // Only 3 numbers available
-	lines := 2
-	numPerLine := 5 // Requires 5 numbers per line
+	tests := []struct {
+		name        string
+		numbersList []int
+		lines       int
+		numPerLine  int
+		expected    [][]int
+	}{
+		{
+			name:        "Not enough numbers for a single line",
+			numbersList: []int{1, 2, 3}, // Only 3 numbers available
+			lines:       1,
+			numPerLine:  5, // Requires 5 numbers per line
+			expected:    nil,
+		},
+		{
+			name:        "Not enough numbers for multiple lines",
+			numbersList: []int{1, 2, 3, 4}, // Only 4 numbers available
+			lines:       2,
+			numPerLine:  5, // Requires 5 numbers per line
+			expected:    nil,
+		},
+	}
 
-	generatedNumbers := GetNumbers(numbersList, lines, numPerLine)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			generatedNumbers := GetNumbers(tc.numbersList, tc.lines, tc.numPerLine)
+			assert.Equal(t, tc.expected, generatedNumbers, "Test %s - Expected nil, got %v", tc.name, generatedNumbers)
+		})
+	}
+}
+func TestGenerateLotteryNumbers_InvalidInputs(t *testing.T) {
+	tests := []struct {
+		name        string
+		numbersList []int
+		lines       int
+		numPerLine  int
+		expected    [][]int
+	}{
+		{
+			name:        "Zero lines",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       0,
+			numPerLine:  5,
+			expected:    nil,
+		},
+		{
+			name:        "Negative lines",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       -1,
+			numPerLine:  5,
+			expected:    nil,
+		},
+		{
+			name:        "Negative numbers per line",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       3,
+			numPerLine:  -1,
+			expected:    nil,
+		},
+		{
+			name:        "Zero numbers per line",
+			numbersList: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			lines:       3,
+			numPerLine:  0,
+			expected:    nil,
+		},
+	}
 
-	if generatedNumbers != nil {
-		t.Errorf("Expected nil, got %v", generatedNumbers)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			generatedNumbers := GetNumbers(tc.numbersList, tc.lines, tc.numPerLine)
+			assert.Equal(t, tc.expected, generatedNumbers)
+		})
 	}
 }
