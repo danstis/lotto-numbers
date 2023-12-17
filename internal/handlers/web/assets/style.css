@@ -64,3 +64,13 @@
 body {
 	color: #0B2027; /* Update the default text color */
 }
+.line-number {
+	font-family: 'Comic Sans MS', cursive, sans-serif;
+	font-weight: bold;
+	font-size: 1.2em;
+	/* Adjust size as needed */
+	color: #c2b280;
+	/* Replace with the exact color code for dark yellow */
+	margin-right: 10px;
+	/* Adjust spacing as needed */
+}
