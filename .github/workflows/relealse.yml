@@ -59,7 +59,7 @@ jobs:
             echo "::set-output name=prerelease::true"
           fi
       - name: Build and push # https://github.com/marketplace/actions/build-and-push-docker-images
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./deploy/dockerfile
