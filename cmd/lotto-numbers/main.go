@@ -12,7 +12,7 @@ import (
 
 // Main entry point for the app.
 func main() {
-	log.Printf("Version %q", version.Version)
+	log.Printf("Lotto Numbers started - v%v", version.Version)
 
 	// Set up the HTTP server using Gorilla Mux
 	r := mux.NewRouter()
