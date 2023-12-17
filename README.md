@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/danstis/lotto-numbers/graph/badge.svg?token=csgW5w5uNs)](https://codecov.io/gh/danstis/lotto-numbers)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=danstis_lotto-numbers&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=danstis_lotto-numbers)
 
-My base repo template for Go projects.
+A simple lotto number generator, hosted publicly at [https://lotto-numbers.fly.dev](https://lotto-numbers.fly.dev).
 
 ## Code structure
 
