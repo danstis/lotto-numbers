@@ -89,7 +89,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to fetch and display the application version
   function fetchAppVersion() {
-    fetch('/version')
+    fetch('/version').then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch app version');
+      }
+      return response.text();
+    })
       .then(response => response.text())
       .then(version => {
         document.getElementById('appVersion').textContent = version;
@@ -121,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((error) => {
         console.error("Error fetching data:", error);
         displayError(error.toString().replace("Error: ", ""));
+        document.getElementById('appVersion').textContent = 'Unavailable';
       });
   }
   // Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
