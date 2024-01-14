@@ -89,17 +89,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to fetch and display the application version
   function fetchAppVersion() {
-    fetch('/version').then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to fetch app version');
-      }
-      return response.text();
-    })
-      .then(response => response.text())
-      .then(version => {
-        document.getElementById('appVersion').textContent = version;
+    fetch("/version")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch app version");
+        }
+        return response.text();
       })
-      .catch(error => console.error('Error fetching app version:', error));
+      .then((version) => {
+        document.getElementById("appVersion").textContent = version;
+      })
+      .catch((error) => console.error("Error fetching app version:", error));
   }
 
   function fetchNumbers(apiUrl) {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((error) => {
         console.error("Error fetching data:", error);
         displayError(error.toString().replace("Error: ", ""));
-        document.getElementById('appVersion').textContent = 'Unavailable';
+        document.getElementById("appVersion").textContent = "Unavailable";
       });
   }
   // Move the clear button event listener setup inside the DOMContentLoaded event where clearSelectedNumbers is defined
@@ -145,7 +145,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const lineContainer = document.createElement("div");
-      lineContainer.classList.add("line-container", "flex", "items-center", "mb-2");
+      lineContainer.classList.add(
+        "line-container",
+        "flex",
+        "items-center",
+        "mb-2"
+      );
 
       // Create and append line number element
       const lineNumberElem = document.createElement("div");
