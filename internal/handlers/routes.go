@@ -40,4 +40,5 @@ func SetupRoutes(ctx context.Context, r *mux.Router) {
 	})
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.FS(assetsFs))))
 	r.HandleFunc("/numbers", GetLotteryNumbers).Methods("GET")
+	r.HandleFunc("/version", VersionHandler).Methods("GET")
 }
