@@ -93,9 +93,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!response.ok) {
         throw new Error('Failed to fetch app version');
       }
-      return response.text();
-    })
-      .then(response => response.text())
+      return response.text(); // This line should only be called once
+    }) // Remove the erroneous then() call
       .then(version => {
         document.getElementById('appVersion').textContent = version;
       })
