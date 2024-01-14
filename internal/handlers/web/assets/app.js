@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectedNumbers = [];
   initializeNumberGrid(selectedNumbers);
   setupGenerateButton(selectedNumbers);
+  fetchAppVersion();
 
   // Function to toggle selection
   function toggleNumberSelection(number) {
@@ -84,6 +85,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       fetchNumbers(apiUrl);
     };
+  }
+
+  // Function to fetch and display the application version
+  function fetchAppVersion() {
+    fetch('/version')
+      .then(response => response.text())
+      .then(version => {
+        document.getElementById('appVersion').textContent = version;
+      })
+      .catch(error => console.error('Error fetching app version:', error));
   }
 
   function fetchNumbers(apiUrl) {
