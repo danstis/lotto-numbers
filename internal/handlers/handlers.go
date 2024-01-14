@@ -65,7 +65,10 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte(version.Version))
+	if _, err := w.Write([]byte(version.Version)); err != nil {
+		log.Printf("Error writing version to response: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }
 
 // parseQueryParamInt parses an integer query parameter.
