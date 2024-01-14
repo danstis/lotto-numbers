@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/danstis/lotto-numbers/internal/models"
+	"github.com/danstis/lotto-numbers/internal/version"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -110,27 +111,6 @@ func TestGetLotteryNumbers(t *testing.T) {
 		},
 	}
 
-func TestVersionHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/version", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(VersionHandler)
-
-	handler.ServeHTTP(rr, req)
-
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	}
-
-	expectedVersion := "0.0.0-development" // This should be the current version set in version.go
-	if rr.Body.String() != expectedVersion {
-		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expectedVersion)
-	}
-}
-
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			req, err := http.NewRequest("GET", "/lottery-numbers"+tc.query, nil)
@@ -161,5 +141,26 @@ func TestVersionHandler(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestVersionHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "/version", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(VersionHandler)
+
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	expectedVersion := version.Version // This should be the current version set in version.go
+	if rr.Body.String() != expectedVersion {
+		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expectedVersion)
 	}
 }

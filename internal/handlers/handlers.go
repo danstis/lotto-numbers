@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
 	"github.com/danstis/lotto-numbers/internal/version"
 
 	"github.com/danstis/lotto-numbers/internal/generator" // Import the generator package
@@ -14,13 +15,6 @@ import (
 )
 
 // GetLotteryNumbers handles the request to generate lottery numbers.
-// VersionHandler writes the current application version to the response.
-func VersionHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte(version.Version))
-}
-
 func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters
 	defaultNumbersList := make([]int, 40)
@@ -65,6 +59,13 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+}
+
+// VersionHandler writes the current application version to the response.
+func VersionHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte(version.Version))
 }
 
 // parseQueryParamInt parses an integer query parameter.

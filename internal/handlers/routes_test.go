@@ -34,6 +34,12 @@ func TestRoutes(t *testing.T) {
 		},
 		{
 			method:       "GET",
+			description:  "Version route",
+			route:        "/version",
+			expectedCode: http.StatusOK,
+		},
+		{
+			method:       "GET",
 			description:  "Assets route",
 			route:        "/assets/app.js",
 			expectedCode: http.StatusOK,
