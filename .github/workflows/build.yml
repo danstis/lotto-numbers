@@ -80,7 +80,7 @@ jobs:
       - name: Go Vet
         run: go vet ./... > govet.out
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v5
         with:
           args: --issues-exit-code=0 --out-format=checkstyle:golangci-lint.out
       - name: SonarCloud Scan
