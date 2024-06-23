@@ -27,8 +27,8 @@ github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsT
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/uptrace/uptrace-go v1.27.1 h1:CIcBWKucTkw1ussNToZA1HNO7+HXOju9zDcFC+MOpOA=
 github.com/uptrace/uptrace-go v1.27.1/go.mod h1:/9tKtcIaxb3GAwPOCqkZ8bhXRR/ZYCsXb9Zs5kh14Eo=
-go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.49.0 h1:h+c4WbSjBBc3j+IsxwB2mWvkm2nDh0SyGLa5Y5+V9cw=
-go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.49.0/go.mod h1:FObmJ0epY1FcwMR7aq7sRkrCfwwV3d0GBGFfyV5JUBg=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.52.0 h1:PnUXStMAOe64DoTyzXaJKgJgF0NbjC5OAz2ovHY7uQw=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.52.0/go.mod h1:1aUSETwl7de76j8Gg8fOBo6xRdAtJ1XqeXgaOkpikLQ=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.52.0 h1:UaQVCH34fQsyDjlgS0L070Kjs9uCrLKoQfzn2Nl7XTY=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.52.0/go.mod h1:Ks4aHdMgu1vAfEY0cIBHcGx2l1S0+PwFm2BE/HRzqSk=
 go.opentelemetry.io/otel v1.27.0 h1:9BZoF3yMK/O1AafMiQTVu0YDj5Ea4hPhxCs7sGva+cg=
