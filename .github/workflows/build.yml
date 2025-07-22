@@ -83,8 +83,8 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           args: --issues-exit-code=0 --out-format=checkstyle:golangci-lint.out
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master # https://github.com/marketplace/actions/sonarcloud-scan
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.2.0 # https://github.com/marketplace/actions/official-sonarqube-scan
         if: ${{ github.actor != 'dependabot[bot]' }}
         with:
           args: >
