@@ -4,6 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeNumberGrid(selectedNumbers);
   setupGenerateButton(selectedNumbers);
 
+  function getBallClass(number) {
+    if (number <= 10) {
+      return "ball-yellow";
+    } else if (number <= 20) {
+      return "ball-blue";
+    } else if (number <= 30) {
+      return "ball-red";
+    }
+    return "ball-green";
+  }
+
   // Function to toggle selection
   function toggleNumberSelection(number) {
     const index = selectedNumbers.indexOf(number);
@@ -22,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedNumbers.forEach((number) => {
         const numberElement = document.createElement("div");
         numberElement.textContent = number;
-        numberElement.classList.add("number-circle");
+        numberElement.classList.add("number-circle", "lotto-ball", getBallClass(parseInt(number)));
         selectedNumbersElement.appendChild(numberElement);
       });
     } else {
@@ -47,13 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
       numberElement.classList.add(
         "w-10",
         "h-10",
-        "bg-blue-500",
-        "text-white",
-        "flex",
-        "items-center",
-        "justify-center",
-        "rounded-full",
-        "mx-auto"
+        "mx-auto",
+        "lotto-ball",
+        getBallClass(i)
       );
       numberElement.onclick = handleNumberClick;
       numberGrid.appendChild(numberElement);
@@ -164,7 +171,11 @@ document.addEventListener("DOMContentLoaded", function () {
       line.forEach((number) => {
         const numberElement = document.createElement("div");
         numberElement.textContent = number;
-        numberElement.classList.add("generated-number-circle");
+        numberElement.classList.add(
+          "generated-number-circle",
+          "lotto-ball",
+          getBallClass(number)
+        );
         lineElem.appendChild(numberElement);
       });
       lineContainer.appendChild(lineElem);
