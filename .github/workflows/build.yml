@@ -74,9 +74,9 @@ jobs:
       - name: Test
         run: go test -v -coverprofile=coverage.out -covermode=count -json ./... | tee test-report.out
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v5.4.3
         with:
-          file: ./coverage.out # optional
+          files: ./coverage.out # optional
       - name: Go Vet
         run: go vet ./... > govet.out
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
