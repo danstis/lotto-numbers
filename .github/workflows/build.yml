@@ -82,7 +82,7 @@ jobs:
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          args: --issues-exit-code=0 --out-format=checkstyle:golangci-lint.out
+          args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.2.0 # https://github.com/marketplace/actions/official-sonarqube-scan
         if: ${{ github.actor != 'dependabot[bot]' }}
