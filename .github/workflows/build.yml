@@ -76,7 +76,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          file: ./coverage.out # optional
+          files: ./coverage.out # optional
       - name: Go Vet
         run: go vet ./... > govet.out
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
