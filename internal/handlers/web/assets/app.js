@@ -5,14 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
   setupGenerateButton(selectedNumbers);
 
   function getBallClass(number) {
-    if (number <= 10) {
-      return "ball-yellow";
-    } else if (number <= 20) {
-      return "ball-blue";
-    } else if (number <= 30) {
+    if (number === 40) {
+      return "ball-purple";
+    } else if (number >= 30) {
       return "ball-red";
+    } else if (number >= 20) {
+      return "ball-green";
+    } else if (number >= 10) {
+      return "ball-orange";
     }
-    return "ball-green";
+    return "ball-blue";
   }
 
   // Function to toggle selection
