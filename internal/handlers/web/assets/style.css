@@ -1,8 +1,7 @@
 
 .selected {
-	background-color: #ffc107;
-	color: #000000;
-	/* Highlight color for selected numbers */
+  opacity: 0.5;
+  /* Highlight selected numbers with 50% transparency */
 }
 #selectedNumbersBox {
 	background-color: #d1e7dd; /* A light green background color */
@@ -41,8 +40,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background-color: #ffffff;
   border-radius: 50%;
   z-index: -1;
@@ -50,23 +49,23 @@
 
 /* Base ball colours */
 .ball-blue {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #93c5fd 40%, #2563eb 100%);
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #93c5fd 20%, #3771ff 60%);
 }
 
 .ball-orange {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fed7aa 40%, #f97316 100%);
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fed7aa 20%, #ff7101 60%);
 }
 
 .ball-green {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #bbf7d0 40%, #16a34a 100%);
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #bbf7d0 20%, #03b303 60%);
 }
 
 .ball-red {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fecaca 40%, #dc2626 100%);
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fecaca 20%, #e80202 60%);
 }
 
 .ball-purple {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e9d5ff 40%, #7e22ce 100%);
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e9d5ff 20%, #b03874 60%);
 }
 #resultSection {
 	background-color: #F6F1D1; /* A light red background color */
