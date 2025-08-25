@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/gorilla/mux v1.8.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 	github.com/uptrace/uptrace-go v1.37.0
 	go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.62.0
 	go.opentelemetry.io/otel v1.37.0
