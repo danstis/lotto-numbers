@@ -57,6 +57,17 @@ jobs:
       - name: Run go build
         run: go build -v ./...
 
+  hadolint:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Run hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: deploy/dockerfile
+
   scan:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
