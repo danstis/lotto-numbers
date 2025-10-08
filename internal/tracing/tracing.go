@@ -15,7 +15,7 @@ func SetupTracing() (trace.Tracer, func(ctx context.Context)) {
 	// Retrieve the uptrace environment variables.
 	dsn := os.Getenv("UPTRACE_DSN")
 	if dsn == "" {
-		log.Fatalf("UPTRACE_DSN environment variable not set")
+		log.Panicf("UPTRACE_DSN environment variable not set")
 	}
 	environment := os.Getenv("ENVIRONMENT")
 	if environment == "" {
