@@ -1,3 +1,4 @@
+// Package models defines data structures used throughout the lotto-numbers application.
 package models
 
 // Define your models here. For example:

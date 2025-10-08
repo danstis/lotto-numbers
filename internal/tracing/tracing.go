@@ -1,3 +1,4 @@
+// Package tracing configures and initializes OpenTelemetry tracing with Uptrace.
 package tracing
 
 import (
