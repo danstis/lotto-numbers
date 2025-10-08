@@ -1,5 +1,6 @@
 FROM golang:1.24-alpine AS builder
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache git
 
 ARG BUILD=0.0.0-development
@@ -10,10 +11,11 @@ COPY ./go.mod .
 COPY ./go.sum .
 RUN go mod download
 COPY . .
-RUN mkdir /app
-RUN GOOS=linux go build -ldflags "-s -w -X 'github.com/danstis/lotto-numbers/internal/version.Version=$BUILD'" -o /app/lotto-numbers ./cmd/lotto-numbers
+RUN mkdir /app && \
+    GOOS=linux go build -ldflags "-s -w -X 'github.com/danstis/lotto-numbers/internal/version.Version=$BUILD'" -o /app/lotto-numbers ./cmd/lotto-numbers
 
 FROM alpine:3
+# hadolint ignore=DL3018
 RUN apk --no-cache add ca-certificates
 WORKDIR /app
 COPY --from=builder /app/* ./
