@@ -1,3 +1,4 @@
+// Package generator provides lottery number generation functionality.
 package generator
 
 import (

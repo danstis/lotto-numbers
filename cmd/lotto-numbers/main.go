@@ -1,3 +1,4 @@
+// Package main is the entry point for the lotto-numbers web service.
 package main
 
 import (

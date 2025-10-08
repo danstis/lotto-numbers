@@ -1,3 +1,4 @@
+// Package handlers implements HTTP request handlers for the lotto-numbers API.
 package handlers
 
 import (
