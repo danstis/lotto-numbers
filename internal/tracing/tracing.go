@@ -12,6 +12,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
+// SetupTracing initializes OpenTelemetry tracing with Uptrace and returns a tracer and shutdown function.
 func SetupTracing() (trace.Tracer, func(ctx context.Context)) {
 	// Retrieve the uptrace environment variables.
 	dsn := os.Getenv("UPTRACE_DSN")
