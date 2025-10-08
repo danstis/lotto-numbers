@@ -1,12 +1,12 @@
 {
-	"sonarlint.connectedMode.project": {
-		"connectionId": "Personal",
-		"projectKey": "danstis_lotto-numbers"
-	},
 	"cSpell.words": [
 		"contrib",
 		"Elem",
 		"otel",
 		"otelmux"
-	]
+	],
+	"sonarlint.connectedMode.project": {
+		"connectionId": "danstis",
+		"projectKey": "danstis_lotto-numbers"
+	}
 }
