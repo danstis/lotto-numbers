@@ -109,7 +109,7 @@ jobs:
           args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6.0.0 # https://github.com/marketplace/actions/official-sonarqube-scan
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' }}
         with:
           args: >
             -Dsonar.projectVersion=${{ needs.version.outputs.FullSemVer }}
