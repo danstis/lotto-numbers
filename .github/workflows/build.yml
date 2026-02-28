@@ -98,7 +98,7 @@ jobs:
       - name: Test
         run: go test -v -coverprofile=coverage.out -covermode=count -json ./... | tee test-report.out
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           files: ./coverage.out # optional
       - name: Go Vet
