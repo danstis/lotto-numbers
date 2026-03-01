@@ -104,7 +104,7 @@ jobs:
       - name: Go Vet
         run: go vet ./... > govet.out
       - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
       - name: SonarQube Scan
