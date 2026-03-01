@@ -113,10 +113,13 @@ jobs:
       - name: Test (JavaScript)
         run: |
           node --test \
+            --experimental-test-coverage \
             --test-reporter=spec \
             --test-reporter-destination=stdout \
             --test-reporter=./internal/handlers/web/assets/test-reporter.cjs \
             --test-reporter-destination=js-test-report.xml \
+            --test-reporter=lcov \
+            --test-reporter-destination=js-coverage.info \
             internal/handlers/web/assets/app.test.js
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.5.2
