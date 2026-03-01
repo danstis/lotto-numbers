@@ -37,6 +37,8 @@ go.opentelemetry.io/auto/sdk v1.2.1 h1:jXsnJ4Lmnqd11kwkBV2LgLoFMZKizbCi5fNZ/ipaZ
 go.opentelemetry.io/auto/sdk v1.2.1/go.mod h1:KRTj+aOaElaLi+wW1kO/DZRXwkF4C5xPbEe3ZiIhN7Y=
 go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.62.0 h1:wbJnIwX0KTq1cpPaxh5p/uPMbmWvQBYKrRd4SdI91nk=
 go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.62.0/go.mod h1:PiB67AUY2rooZsFDWZ8TBmpST1KB9fyrAd1NXxANZsM=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.65.0 h1:LIMn2KWRS0jRDDHYyIEYgKWsMwufA9GXusJiwik0u64=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.65.0/go.mod h1:JwJa4o3Wq+4Yz2BjlYFGWyx2h0Fw1lnoj5kpsaTI97o=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.65.0 h1:n8qdwrebNEHF/zHpueuZ4OacdJ8CdSaP7xef9WRZXTQ=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.65.0/go.mod h1:Z1pjGxUL3nJ/IbDDfL6rBD0Xbz7ZOViRqrIUg4l1CYE=
 go.opentelemetry.io/contrib/processors/minsev v0.13.0 h1:pADh6ro5deXRfNmry136khTZYWVXn9NKZR5nZuEXtXw=
