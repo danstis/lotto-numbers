@@ -1,21 +1,21 @@
-document.addEventListener("DOMContentLoaded", function () {
+function getBallClass(number) {
+  if (number === 40) {
+    return 'ball-purple'
+  } else if (number >= 30) {
+    return 'ball-red'
+  } else if (number >= 20) {
+    return 'ball-green'
+  } else if (number >= 10) {
+    return 'ball-orange'
+  }
+  return 'ball-blue'
+}
+
+if (typeof document !== 'undefined') document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("clearButton").onclick = clearSelectedNumbers;
   const selectedNumbers = [];
   initializeNumberGrid(selectedNumbers);
   setupGenerateButton(selectedNumbers);
-
-  function getBallClass(number) {
-    if (number === 40) {
-      return 'ball-purple'
-    } else if (number >= 30) {
-      return 'ball-red'
-    } else if (number >= 20) {
-      return 'ball-green'
-    } else if (number >= 10) {
-      return 'ball-orange'
-    }
-    return 'ball-blue'
-  }
 
   // Function to toggle selection
   function toggleNumberSelection (number) {
@@ -193,3 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`
   }
 })
+
+if (typeof module !== 'undefined') {
+  module.exports = { getBallClass }
+}

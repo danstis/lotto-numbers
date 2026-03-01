@@ -108,8 +108,16 @@ jobs:
         with:
           go-version: ^1.26
         id: go
-      - name: Test
+      - name: Test (Go)
         run: go test -v -coverprofile=coverage.out -covermode=count -json ./... | tee test-report.out
+      - name: Test (JavaScript)
+        run: |
+          node --test \
+            --test-reporter=spec \
+            --test-reporter-destination=stdout \
+            --test-reporter=./internal/handlers/web/assets/test-reporter.cjs \
+            --test-reporter-destination=js-test-report.xml \
+            internal/handlers/web/assets/app.test.js
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.5.2
         with:

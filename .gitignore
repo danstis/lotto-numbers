@@ -31,3 +31,6 @@ _testmain.go
 .env
 *.ignore*
 /.claude
+
+# Generated test/coverage reports
+js-test-report.xml
