@@ -78,7 +78,7 @@ jobs:
           path: hadolint-report.json
 
   scan:
-    name: SonarCloud Scan
+    name: Lint and Scan
     runs-on: ubuntu-latest
     needs: [version, hadolint]
     steps:
@@ -107,6 +107,11 @@ jobs:
         uses: golangci/golangci-lint-action@v9
         with:
           args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
+      - name: Run govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-input: ^1.26
+          go-package: ./...
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7.0.0 # https://github.com/marketplace/actions/official-sonarqube-scan
         if: ${{ github.actor != 'dependabot[bot]' }}
