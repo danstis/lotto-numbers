@@ -4,5 +4,9 @@
 		"Elem",
 		"otel",
 		"otelmux"
-	]
+	],
+	"sonarlint.connectedMode.project": {
+		"connectionId": "danstis",
+		"projectKey": "danstis_lotto-numbers"
+	}
 }

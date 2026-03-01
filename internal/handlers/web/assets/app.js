@@ -1,8 +1,21 @@
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('clearButton').onclick = clearSelectedNumbers
-  const selectedNumbers = []
-  initializeNumberGrid(selectedNumbers)
-  setupGenerateButton(selectedNumbers)
+function getBallClass(number) {
+  if (number === 40) {
+    return 'ball-purple'
+  } else if (number >= 30) {
+    return 'ball-red'
+  } else if (number >= 20) {
+    return 'ball-green'
+  } else if (number >= 10) {
+    return 'ball-orange'
+  }
+  return 'ball-blue'
+}
+
+if (typeof document !== 'undefined') document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("clearButton").onclick = clearSelectedNumbers;
+  const selectedNumbers = [];
+  initializeNumberGrid(selectedNumbers);
+  setupGenerateButton(selectedNumbers);
 
   // Function to toggle selection
   function toggleNumberSelection (number) {
@@ -19,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedNumbersElement = document.getElementById('selectedNumbers')
     selectedNumbersElement.innerHTML = '' // Clear previous content
     if (selectedNumbers.length > 0) {
-      for (const number of selectedNumbers) {
+      selectedNumbers.forEach((number) => {
         const numberElement = document.createElement('div')
         numberElement.textContent = number
-        numberElement.classList.add('number-circle')
+        numberElement.classList.add('number-circle', 'lotto-ball', getBallClass(parseInt(number)))
         selectedNumbersElement.appendChild(numberElement)
-      }
+      })
     } else {
       selectedNumbersElement.textContent = 'None'
     }
@@ -47,13 +60,14 @@ document.addEventListener('DOMContentLoaded', function () {
       numberElement.classList.add(
         'w-10',
         'h-10',
-        'bg-blue-500',
-        'text-white',
+        'mx-auto',
         'flex',
         'items-center',
         'justify-center',
         'rounded-full',
-        'mx-auto'
+        'text-white',
+        'lotto-ball',
+        getBallClass(i)
       )
       numberElement.onclick = handleNumberClick
       numberGrid.appendChild(numberElement)
@@ -165,10 +179,10 @@ document.addEventListener('DOMContentLoaded', function () {
       for (const number of line) {
         const numberElement = document.createElement('div')
         numberElement.textContent = number
-        numberElement.classList.add('generated-number-circle')
+        numberElement.classList.add('generated-number-circle', 'lotto-ball', getBallClass(number))
         lineElem.appendChild(numberElement)
       }
-      lineContainer.appendChild(lineElem)
+      lineContainer.appendChild(lineElem);
 
       container.appendChild(lineContainer)
     }
@@ -179,3 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.innerHTML = `<div class="error">Error: ${errorMessage}</div>`
   }
 })
+
+if (typeof module !== 'undefined') {
+  module.exports = { getBallClass }
+}
