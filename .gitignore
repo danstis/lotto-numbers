@@ -30,3 +30,4 @@ _testmain.go
 # Other
 .env
 *.ignore*
+/.claude
