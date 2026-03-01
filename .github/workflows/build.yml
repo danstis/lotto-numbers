@@ -77,8 +77,29 @@ jobs:
           name: hadolint-report
           path: hadolint-report.json
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v6
+        with:
+          go-version: ^1.26
+        id: go
+      - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
+      - name: Run govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-input: ^1.26
+          go-package: ./...
+
   scan:
-    name: Lint and Scan
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
     needs: [version, hadolint]
     steps:
@@ -103,15 +124,6 @@ jobs:
           files: ./coverage.out # optional
       - name: Go Vet
         run: go vet ./... > govet.out
-      - name: Run golangci-lint # https://github.com/marketplace/actions/run-golangci-lint
-        uses: golangci/golangci-lint-action@v9
-        with:
-          args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
-      - name: Run govulncheck
-        uses: golang/govulncheck-action@v1
-        with:
-          go-version-input: ^1.26
-          go-package: ./...
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7.0.0 # https://github.com/marketplace/actions/official-sonarqube-scan
         if: ${{ github.actor != 'dependabot[bot]' }}
