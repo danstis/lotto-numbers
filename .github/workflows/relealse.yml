@@ -79,7 +79,7 @@ jobs:
           custom_tag: ${{ steps.gitversion.outputs.FullSemVer }}
           tag_prefix: v
       - name: Create Release
-        uses: softprops/action-gh-release@v2.4.1 # https://github.com/marketplace/actions/gh-release
+        uses: softprops/action-gh-release@v2.5.0 # https://github.com/marketplace/actions/gh-release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: v${{ steps.gitversion.outputs.FullSemVer }}
