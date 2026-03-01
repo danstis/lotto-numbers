@@ -1,51 +1,57 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
-    "name": "Go",
-    "image": "mcr.microsoft.com/devcontainers/go:2-1-bullseye",
+	"name": "Lotto Numbers - AI Agentic Dev",
+	"image": "ghcr.io/danstis/ai-devcontainer-base:latest",
 
-    // Features to add to the dev container. More info: https://containers.dev/features.
-    // "features": {},
+	"features": {
+		"ghcr.io/guiyomh/features/golangci-lint:0": {},
+		"ghcr.io/guiyomh/features/goreleaser:0": {},
+		"ghcr.io/guiyomh/features/gotestsum:0": {},
+		"ghcr.io/danstis/devcontainers-features/gitversion:1": {
+			"version": "5"
+		}
+	},
 
-    // Configure tool-specific properties.
-    "customizations": {
-        // Configure properties specific to VS Code.
-        "vscode": {
-            // Set *default* container specific settings.json values on container create.
-            "settings": {
-                "go.toolsManagement.checkForUpdates": "local",
-                "go.useLanguageServer": true,
-                "go.gopath": "/go"
-            },
-            "extensions": [
-                "GitHub.vscode-pull-request-github",
-                "EditorConfig.EditorConfig",
-                "golang.go",
-                "ms-vscode.makefile-tools",
-                "hbenl.vscode-test-explorer",
-                "Gruntfuggly.todo-tree",
-                "dakara.transformer",
-                "esbenp.prettier-vscode"
-            ]
-        }
-    },
-    "features": {
-        "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/guiyomh/features/golangci-lint:0": {},
-        "ghcr.io/guiyomh/features/goreleaser:0": {},
-        "ghcr.io/guiyomh/features/gotestsum:0": {},
-        "ghcr.io/devcontainers/features/docker-in-docker": {},
-        "ghcr.io/danstis/devcontainers-features/gitversion:1": {
-            "version": "5"
-        }
-    },
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind",
+		"source=${localEnv:HOME}/.config,target=/home/vscode/.config,type=bind"
+	],
 
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    // "forwardPorts": [],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"go.toolsManagement.checkForUpdates": "local",
+				"go.useLanguageServer": true,
+				"go.gopath": "/go"
+			},
+			"extensions": [
+				// Go Development (preserve from current)
+				"golang.go",
+				"GitHub.vscode-pull-request-github",
+				"EditorConfig.EditorConfig",
+				"ms-vscode.makefile-tools",
+				"hbenl.vscode-test-explorer",
+				"Gruntfuggly.todo-tree",
+				"dakara.transformer",
+				"esbenp.prettier-vscode",
 
-    // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "echo alias ll=\\'ls -alF\\' >> ~/.bash_aliases"
+				// AI Assistance (from ai-devcontainer-base)
+				"genieai.chatgpt-vscode",
+				"GoogleCloudTools.gemini-code-assist",
 
-    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-    // "remoteUser": "root"
+				// Code Quality & Visualization (from ai-devcontainer-base)
+				"SonarSource.sonarlint-vscode",
+				"mhutchie.git-graph",
+				"ryanluker.vscode-coverage-gutters",
+				"CodeStats.vscode-codestats",
+
+				// Language Support (from ai-devcontainer-base)
+				"redhat.vscode-yaml",
+				"DotJoshJohnson.xml",
+				"tamasfe.even-better-toml",
+				"grapecity.gc-excelviewer"
+			]
+		}
+	},
+
+	"postCreateCommand": "echo alias ll='ls -alF' >> ~/.bash_aliases"
 }
