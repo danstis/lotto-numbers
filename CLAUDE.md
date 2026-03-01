@@ -12,7 +12,8 @@ Lotto Numbers is a web API for generating random lottery numbers with OpenTeleme
 - **Entry point:** `cmd/lotto-numbers/main.go` - initializes HTTP server, tracing, and middleware with Gorilla Mux router
 - **Number generation:** `internal/generator/` - core lottery number generation logic with shuffle-based randomization
 - **HTTP handlers:** `internal/handlers/` - routes defined in `routes.go`, handler implementations in `handlers.go`
-- **Static assets:** `internal/handlers/web/` - embedded filesystem for serving index.html and assets
+- **Static assets:** `internal/handlers/web/` - embedded filesystem (`web/index.html` and `web/assets/*`) served at `/` and `/assets/`
+- **Models:** `internal/models/` - `LotteryNumbers` struct wrapping generated number lines
 - **Tracing:** `internal/tracing/` - Uptrace/OpenTelemetry integration with DSN-based configuration
 - **Middleware:** `internal/middleware/` - logging middleware that captures request duration and strips port from IP
 - **Versioning:** `internal/version/version.go` - version string injected via ldflags at build time
@@ -81,18 +82,23 @@ UPTRACE_DSN=your_dsn PORT=8091 go run cmd/lotto-numbers/main.go
 
 ## API Endpoints
 
+- `GET /` - Serves static web interface (`index.html`)
+- `GET /assets/*` - Serves static assets (JS, CSS) from embedded filesystem
 - `GET /numbers` - Generate lottery numbers
   - Query params: `lines` (default 5), `numPerLine` (default 6), `numbersList` (comma-separated integers)
   - Returns: `{"lines": [[int]]}`
 - `GET /version` - Returns version string injected at build time
-- `GET /` - Serves static web interface
 
 ## Deployment
 
-- **Docker:** Multi-stage build in `deploy/dockerfile` with version injection via `BUILD` arg
+- **Docker:** Multi-stage build in `deploy/dockerfile` with version injection via `BUILD` arg; default container port is 8080
 - **Fly.io:** Configured in `fly.toml`, deploy with `flyctl deploy --remote-only`
-- **CI/CD:** GitHub Actions workflows handle build, test, lint, SonarCloud scanning, and deployment
-- **Versioning:** GitVersion with Conventional Commits determines version numbers automatically
+- **CI/CD:** GitHub Actions workflows:
+  - `build.yml` — build, test, lint (golangci-lint), SonarCloud scan, Dockerfile lint (hadolint), Codecov upload
+  - `relealse.yml` — Docker image build/push to GHCR, GitHub Release creation, Fly.io deployment
+  - `codeql.yml` — CodeQL static analysis
+- **Versioning:** GitVersion (`GitVersion.yml`) with Conventional Commits determines version numbers automatically
+- **GoReleaser:** `.goreleaser.yml` produces cross-platform binaries (Linux, Windows, macOS)
 
 ## External Dependencies
 
