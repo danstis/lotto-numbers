@@ -10,8 +10,12 @@ import (
 
 func TestSetupTracing(t *testing.T) {
 	// Set the required environment variables
-	os.Setenv("UPTRACE_DSN", "test_dsn")
-	os.Setenv("ENVIRONMENT", "test_environment")
+	if err := os.Setenv("UPTRACE_DSN", "test_dsn"); err != nil {
+		t.Fatalf("Failed to set UPTRACE_DSN: %v", err)
+	}
+	if err := os.Setenv("ENVIRONMENT", "test_environment"); err != nil {
+		t.Fatalf("Failed to set ENVIRONMENT: %v", err)
+	}
 
 	// Call the function
 	tracer, shutdown := SetupTracing()

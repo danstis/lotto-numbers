@@ -21,16 +21,16 @@ jobs:
       id-token: write
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v4.0.1
+        uses: gittools/actions/gitversion/setup@v4.3.3
         with:
           versionSpec: "6.x"
       - name: Use GitVersion
         id: gitversion # step id used as reference for output values
-        uses: gittools/actions/gitversion/execute@v4.0.1
+        uses: gittools/actions/gitversion/execute@v4.3.3
       - name: Create annotation for build error
         run: |
           echo "::notice::FullSemVer ${{ steps.gitversion.outputs.FullSemVer }}"
@@ -79,7 +79,7 @@ jobs:
           custom_tag: ${{ steps.gitversion.outputs.FullSemVer }}
           tag_prefix: v
       - name: Create Release
-        uses: softprops/action-gh-release@v2.3.2 # https://github.com/marketplace/actions/gh-release
+        uses: softprops/action-gh-release@v2.5.0 # https://github.com/marketplace/actions/gh-release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: v${{ steps.gitversion.outputs.FullSemVer }}

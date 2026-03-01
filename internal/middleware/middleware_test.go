@@ -14,7 +14,7 @@ import (
 func TestLoggingMiddleware(t *testing.T) {
 	// Arrange
 	called := false
-	nextHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	nextHandler := http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {
 		called = true
 	})
 	handler := LoggingMiddleware(nextHandler)
@@ -44,7 +44,7 @@ func TestLoggingMiddleware(t *testing.T) {
 
 func TestLoggingMiddlewareWithDifferentMethod(t *testing.T) {
 	// Arrange
-	nextHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+	nextHandler := http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
 	handler := LoggingMiddleware(nextHandler)
 	recorder := httptest.NewRecorder()
 	request, _ := http.NewRequest("POST", "/test", nil)

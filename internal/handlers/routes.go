@@ -24,13 +24,13 @@ func SetupRoutes(ctx context.Context, r *mux.Router) {
 	webFs, err := fs.Sub(static, "web")
 	if err != nil {
 		span.RecordError(err)
-		log.Fatalf("Unable to create sub filesystem: %v", err)
+		log.Panicf("Unable to create sub filesystem: %v", err)
 	}
 	// Create a sub filesystem for the assets directory.
 	assetsFs, err := fs.Sub(static, "web/assets")
 	if err != nil {
 		span.RecordError(err)
-		log.Fatalf("Unable to create sub filesystem for assets: %v", err)
+		log.Panicf("Unable to create sub filesystem for assets: %v", err)
 	}
 
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

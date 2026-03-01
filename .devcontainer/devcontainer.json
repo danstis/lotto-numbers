@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
     "name": "Go",
-    "image": "mcr.microsoft.com/devcontainers/go:0-1-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/go:2-1-bullseye",
 
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
@@ -35,7 +35,7 @@
         "ghcr.io/guiyomh/features/goreleaser:0": {},
         "ghcr.io/guiyomh/features/gotestsum:0": {},
         "ghcr.io/devcontainers/features/docker-in-docker": {},
-        "ghcr.io/danstis/devcontainers-features/gitversion:0": {
+        "ghcr.io/danstis/devcontainers-features/gitversion:1": {
             "version": "5"
         }
     },

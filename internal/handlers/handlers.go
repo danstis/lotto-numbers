@@ -1,3 +1,4 @@
+// Package handlers implements HTTP request handlers for the lotto-numbers API.
 package handlers
 
 import (
@@ -62,7 +63,7 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 }
 
 // VersionHandler writes the current application version to the response.
-func VersionHandler(w http.ResponseWriter, r *http.Request) {
+func VersionHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write([]byte(version.Version)); err != nil {

@@ -5,18 +5,18 @@
 -   **Purpose:** Generates random lottery numbers via a web API, with tracing and logging, deployed on Fly.io.
 -   **Architecture:**
     -   Main entry: `cmd/lotto-numbers/main.go` sets up HTTP server, tracing, and middleware.
-    -   Core logic: `internal/generator/` (number generation), `internal/handlers/` (HTTP routes/controllers), `internal/models/` (data models).
+    -   Core logic: `internal/generator/` (number generation), `internal/handlers/` (HTTP routes/controllers), `internal/models/` (`LotteryNumbers` struct).
     -   Middleware: `internal/middleware/` for logging requests.
     -   Tracing: `internal/tracing/` integrates Uptrace and OpenTelemetry.
-    -   Static web assets: `internal/handlers/web/` (served via embedded FS).
+    -   Static web assets: `internal/handlers/web/` — `index.html` served at `/`, assets served at `/assets/` (both embedded via Go `embed`).
     -   Versioning: `internal/version/version.go` and GitVersion workflow.
 
 ## Key Workflows
 
 -   **Build:**
-    -   Local: `go build -v ./...`
-    -   Docker: See `deploy/dockerfile` for multi-stage build and version injection.
-    -   CI: GitHub Actions (`.github/workflows/build.yml`) runs build, tests, lint, and SonarCloud scan.
+    -   Local: `go build -v ./...` (requires Go 1.26+)
+    -   Docker: See `deploy/dockerfile` for multi-stage build and version injection via `BUILD` arg.
+    -   CI: GitHub Actions (`.github/workflows/build.yml`) runs build, tests, lint, hadolint, and SonarCloud scan.
 -   **Test:**
     -   Local: `go test -v -coverprofile=coverage.out -covermode=count ./...`
     -   CI: Coverage uploaded to Codecov.
@@ -24,13 +24,15 @@
     -   Local: `golangci-lint run`
     -   CI: `golangci-lint-action` in workflow.
 -   **Release/Deploy:**
-    -   Versioning via GitVersion and Conventional Commits.
-    -   Docker image built and pushed to GHCR, deployed to Fly.io (`flyctl deploy --remote-only`).
+    -   Versioning via GitVersion (`GitVersion.yml`) and Conventional Commits.
+    -   Docker image built and pushed to GHCR, deployed to Fly.io (`flyctl deploy --remote-only`) via `.github/workflows/relealse.yml`.
+    -   GoReleaser (`.goreleaser.yml`) produces cross-platform binaries (Linux, Windows, macOS).
+    -   CodeQL static analysis runs in `.github/workflows/codeql.yml`.
     -   See `fly.toml` and `deploy/compose.yml` for config.
 
 ## Patterns & Conventions
 
--   **Routing:** All HTTP routes registered in `internal/handlers/routes.go` via Gorilla Mux. Static files served from embedded FS.
+-   **Routing:** All HTTP routes registered in `internal/handlers/routes.go` via Gorilla Mux. `GET /` serves `index.html`; `GET /assets/*` serves static assets; both from embedded FS.
 -   **API:** `/numbers` endpoint returns JSON `{ "lines": [[int]] }`. Query params: `lines`, `numPerLine`, `numbersList`.
 -   **Tracing:** Uptrace DSN required via `UPTRACE_DSN` env var. Tracing setup in `internal/tracing/tracing.go`.
 -   **Logging:** All requests logged with IP, method, path, and duration.
