@@ -128,7 +128,7 @@ jobs:
       - name: Go Vet
         run: go vet ./... > govet.out
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v7.0.0 # https://github.com/marketplace/actions/official-sonarqube-scan
+        uses: SonarSource/sonarqube-scan-action@v7.2.1 # https://github.com/marketplace/actions/official-sonarqube-scan
         if: ${{ github.actor != 'dependabot[bot]' }}
         with:
           args: >
