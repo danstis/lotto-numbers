@@ -24,9 +24,11 @@ func GetNumbers(numbersList []int, lines, numPerLine int) [][]int {
 	pool := make([]int, len(numbersList))
 	copy(pool, numbersList)
 
-	lotteryNumbers := make([][]int, 0)
+	lotteryNumbers := make([][]int, 0, lines)
 	linesMap := make(map[string]bool)
-	for i := 0; i < lines; i++ {
+	// Safety cap prevents an infinite loop when lines > C(len(pool), numPerLine).
+	maxAttempts := lines * (len(pool) + 1) * 2
+	for attempts := 0; len(lotteryNumbers) < lines && attempts < maxAttempts; attempts++ {
 		rand.Shuffle(len(pool), func(i, j int) {
 			pool[i], pool[j] = pool[j], pool[i]
 		})

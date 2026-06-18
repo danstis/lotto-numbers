@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -156,7 +157,7 @@ func TestGetNumbers_UniformDistribution(t *testing.T) {
 	iterations := 10000
 
 	freq := make(map[int]int)
-	for i := 0; i < iterations; i++ {
+	for range iterations {
 		result := GetNumbers(numbersList, 1, numPerLine)
 		if len(result) == 0 {
 			t.Fatal("GetNumbers returned no results")
@@ -174,6 +175,48 @@ func TestGetNumbers_UniformDistribution(t *testing.T) {
 		if math.Abs(float64(count)-expected) > tolerance {
 			t.Errorf("number %d appeared %d times, expected ~%.0f (±%.0f)", num, count, expected, tolerance)
 		}
+	}
+}
+
+// TestGetNumbers_ConcurrentCallsDiverseResults is the regression test for the
+// time-seeded RNG bug. With the old rand.New(rand.NewSource(time.Now().UnixNano()))
+// pattern, goroutines that land in the same nanosecond receive identical seeds and
+// thus produce identical shuffle sequences — most results collapse to the same
+// combination. With the auto-seeded global rand the results must be diverse.
+func TestGetNumbers_ConcurrentCallsDiverseResults(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	numPerLine := 5
+	goroutines := 200
+
+	type result struct{ line string }
+	results := make(chan result, goroutines)
+
+	var wg sync.WaitGroup
+	for range goroutines {
+		wg.Go(func() {
+			r := GetNumbers(numbersList, 1, numPerLine)
+			if len(r) > 0 {
+				results <- result{fmt.Sprint(r[0])}
+			}
+		})
+	}
+	wg.Wait()
+	close(results)
+
+	seen := make(map[string]int)
+	total := 0
+	for r := range results {
+		seen[r.line]++
+		total++
+	}
+
+	// C(10,5) = 252 possible combinations. With 200 concurrent calls and a
+	// properly seeded RNG we expect a wide spread; with a time-colliding seed
+	// almost all calls collapse to the same combination.
+	// Require at least 50 distinct combinations out of 200.
+	if len(seen) < 50 {
+		t.Errorf("concurrent calls produced only %d distinct combinations out of %d total; "+
+			"expected ≥50 (possible RNG seed collision)", len(seen), total)
 	}
 }
 
