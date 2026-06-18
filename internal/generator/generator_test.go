@@ -2,6 +2,7 @@ package generator
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"testing"
 
@@ -149,6 +150,43 @@ func TestGenerateLotteryNumbers_NotEnoughNumbers(t *testing.T) {
 		})
 	}
 }
+func TestGetNumbers_UniformDistribution(t *testing.T) {
+	numbersList := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	numPerLine := 5
+	iterations := 10000
+
+	freq := make(map[int]int)
+	for i := 0; i < iterations; i++ {
+		result := GetNumbers(numbersList, 1, numPerLine)
+		if len(result) == 0 {
+			t.Fatal("GetNumbers returned no results")
+		}
+		for _, num := range result[0] {
+			freq[num]++
+		}
+	}
+
+	// Each number should appear roughly iterations*numPerLine/len(numbersList) times.
+	expected := float64(iterations*numPerLine) / float64(len(numbersList))
+	// Allow ±15% deviation — chi-square at 99.9% for 9 df is ~27, this is a looser guard.
+	tolerance := expected * 0.15
+	for num, count := range freq {
+		if math.Abs(float64(count)-expected) > tolerance {
+			t.Errorf("number %d appeared %d times, expected ~%.0f (±%.0f)", num, count, expected, tolerance)
+		}
+	}
+}
+
+func TestGetNumbers_DoesNotMutateInput(t *testing.T) {
+	original := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	input := make([]int, len(original))
+	copy(input, original)
+
+	GetNumbers(input, 5, 5)
+
+	assert.Equal(t, original, input, "GetNumbers must not modify the caller's slice")
+}
+
 func TestGenerateLotteryNumbers_InvalidInputs(t *testing.T) {
 	tests := []struct {
 		name        string

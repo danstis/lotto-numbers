@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
-	"time"
 )
 
 // GetNumbers generates a list of lottery numbers based on the given parameters.
@@ -22,16 +21,18 @@ func GetNumbers(numbersList []int, lines, numPerLine int) [][]int {
 		return nil // Not enough numbers to generate a line, zero lines requested, or non-positive numPerLine
 	}
 
+	pool := make([]int, len(numbersList))
+	copy(pool, numbersList)
+
 	lotteryNumbers := make([][]int, 0)
 	linesMap := make(map[string]bool)
-	localRand := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < lines; i++ {
-		localRand.Shuffle(len(numbersList), func(i, j int) {
-			numbersList[i], numbersList[j] = numbersList[j], numbersList[i]
+		rand.Shuffle(len(pool), func(i, j int) {
+			pool[i], pool[j] = pool[j], pool[i]
 		})
 		uniqueLine := make(map[int]bool)
 		line := make([]int, 0, numPerLine)
-		for _, num := range numbersList[:numPerLine] {
+		for _, num := range pool[:numPerLine] {
 			if !uniqueLine[num] {
 				uniqueLine[num] = true
 				line = append(line, num)
