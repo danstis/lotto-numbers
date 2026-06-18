@@ -15,6 +15,8 @@ import (
 	"github.com/danstis/lotto-numbers/internal/models"    // Import the models package
 )
 
+const maxLines = 100
+
 // GetLotteryNumbers handles the request to generate lottery numbers.
 func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters
@@ -38,6 +40,10 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	// Validate the parameters before calling the generator
 	if lines <= 0 || numPerLine <= 0 {
 		sendHTTPError(w, "Invalid input: 'lines' and 'numPerLine' must be positive numbers", nil, http.StatusBadRequest)
+		return
+	}
+	if lines > maxLines {
+		sendHTTPError(w, fmt.Sprintf("Invalid input: 'lines' must be <= %d", maxLines), nil, http.StatusBadRequest)
 		return
 	}
 
