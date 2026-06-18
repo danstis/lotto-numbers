@@ -57,6 +57,15 @@ func TestGetLotteryNumbers(t *testing.T) {
 			wantErrContains: "",
 		},
 		{
+			name:            "Too many lines parameter",
+			query:           "?lines=101",
+			wantStatusCode:  http.StatusBadRequest,
+			wantLines:       0,
+			wantNumPerLine:  0,
+			wantSubset:      nil,
+			wantErrContains: "'lines' must be <= 100",
+		},
+		{
 			name:            "Valid numPerLine parameter",
 			query:           "?numPerLine=5",
 			wantStatusCode:  http.StatusOK,
