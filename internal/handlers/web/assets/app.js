@@ -1,3 +1,12 @@
+function buildNumbersUrl (basePath, lines, numPerLine, numbersList, ensureAll) {
+  const numbersJoined = numbersList.join(',')
+  let url = `${basePath}?lines=${lines}&numPerLine=${numPerLine}&numbersList=${numbersJoined}`
+  if (ensureAll) {
+    url += '&ensureAllNumbers=true'
+  }
+  return url
+}
+
 function getBallClass(number) {
   if (number === 40) {
     return 'ball-purple'
@@ -94,9 +103,8 @@ if (typeof document !== 'undefined') document.addEventListener("DOMContentLoaded
     document.getElementById('generateButton').onclick = function () {
       const numLinesValue = document.getElementById('numLines').value
       const numPerLineValue = document.getElementById('numPerLine').value
-      const numbersJoined = selectedNumbers.join(',')
-      const apiUrl = `./numbers?lines=${numLinesValue}&numPerLine=${numPerLineValue}&numbersList=${numbersJoined}`
-
+      const ensureAll = document.getElementById('ensureAllNumbers').checked
+      const apiUrl = buildNumbersUrl('./numbers', numLinesValue, numPerLineValue, selectedNumbers, ensureAll)
       fetchNumbers(apiUrl)
     }
     fetchAppVersion()
@@ -195,5 +203,5 @@ if (typeof document !== 'undefined') document.addEventListener("DOMContentLoaded
 })
 
 if (typeof module !== 'undefined') {
-  module.exports = { getBallClass }
+  module.exports = { getBallClass, buildNumbersUrl }
 }

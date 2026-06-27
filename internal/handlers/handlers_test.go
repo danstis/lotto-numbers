@@ -20,6 +20,7 @@ func TestGetLotteryNumbers(t *testing.T) {
 		wantLines       int
 		wantNumPerLine  int
 		wantSubset      []int
+		wantCoverageOf  []int
 		wantErrContains string
 	}{
 		{
@@ -118,6 +119,33 @@ func TestGetLotteryNumbers(t *testing.T) {
 			wantSubset:      nil,
 			wantErrContains: "ensure the 'numbersList' contains enough unique numbers",
 		},
+		{
+			name:           "ensureAllNumbers=true with 24 numbers 4 lines 6 per line",
+			query:          "?numbersList=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24&lines=4&numPerLine=6&ensureAllNumbers=true",
+			wantStatusCode: http.StatusOK,
+			wantLines:      4,
+			wantNumPerLine: 6,
+			wantCoverageOf: func() []int {
+				s := make([]int, 24)
+				for i := range 24 {
+					s[i] = i + 1
+				}
+				return s
+			}(),
+		},
+		{
+			name:            "ensureAllNumbers=true infeasible 25 numbers 4 lines 6 per line",
+			query:           "?numbersList=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25&lines=4&numPerLine=6&ensureAllNumbers=true",
+			wantStatusCode:  http.StatusBadRequest,
+			wantErrContains: "cannot fit all 25 numbers",
+		},
+		{
+			name:           "ensureAllNumbers=false behaves as default",
+			query:          "?ensureAllNumbers=false",
+			wantStatusCode: http.StatusOK,
+			wantLines:      5,
+			wantNumPerLine: 6,
+		},
 	}
 
 	for _, tc := range tests {
@@ -146,6 +174,17 @@ func TestGetLotteryNumbers(t *testing.T) {
 					assert.Len(t, line, tc.wantNumPerLine, "each line should contain the correct number of numbers")
 					if tc.wantSubset != nil {
 						assert.Subset(t, tc.wantSubset, line, "each line should only contain numbers from the provided numbersList")
+					}
+				}
+				if tc.wantCoverageOf != nil {
+					seen := make(map[int]bool)
+					for _, line := range lotteryNumbers.Lines {
+						for _, n := range line {
+							seen[n] = true
+						}
+					}
+					for _, n := range tc.wantCoverageOf {
+						assert.True(t, seen[n], "number %d must appear at least once across all lines", n)
 					}
 				}
 			}
