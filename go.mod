@@ -2,6 +2,8 @@ module github.com/danstis/lotto-numbers
 
 go 1.26.0
 
+toolchain go1.26.4
+
 require (
 	github.com/gorilla/mux v1.8.1
 	github.com/stretchr/testify v1.11.1

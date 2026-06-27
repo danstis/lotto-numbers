@@ -53,7 +53,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
         with:
-          go-version: ^1.26
+          go-version: 1.26.4
         id: go
       - name: Run go build
         run: go build -v ./...
@@ -67,7 +67,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
         with:
-          go-version: ^1.26
+          go-version: 1.26.4
         id: go
       - name: Run hadolint
         uses: hadolint/hadolint-action@v3.3.0
@@ -87,8 +87,7 @@ jobs:
           args: --issues-exit-code=0 --output.checkstyle.path=golangci-lint.out
       - name: Run govulncheck
         run: |
-          go install golang.org/x/vuln/cmd/govulncheck@latest
-          govulncheck ./...
+          GOTOOLCHAIN=go1.26.4+auto go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 
   scan:
     name: SonarCloud Scan
@@ -106,7 +105,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
         with:
-          go-version: ^1.26
+          go-version: 1.26.4
         id: go
       - name: Test (Go)
         run: go test -v -coverprofile=coverage.out -covermode=count -json ./... | tee test-report.out
