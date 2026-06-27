@@ -121,7 +121,7 @@ jobs:
             --test-reporter-destination=js-coverage.info \
             internal/handlers/web/assets/app.test.js
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v6.0.2
+        uses: codecov/codecov-action@v7.0.0
         with:
           files: ./coverage.out # optional
       - name: Go Vet
