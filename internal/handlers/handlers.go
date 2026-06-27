@@ -21,7 +21,7 @@ const maxLines = 100
 func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters
 	defaultNumbersList := make([]int, 40)
-	for i := 0; i < 40; i++ {
+	for i := range 40 {
 		defaultNumbersList[i] = i + 1
 	}
 
@@ -47,8 +47,22 @@ func GetLotteryNumbers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Call the generateLotteryNumbers function with the validated parameters
-	generatedNumbers := generator.GetNumbers(numbersList, lines, numPerLine)
+	ensureAll := parseQueryParamBool(r, "ensureAllNumbers", false)
+
+	var generatedNumbers [][]int
+	if ensureAll {
+		// Compute distinct count M and enforce the feasibility rule before calling
+		// the generator so the user gets a specific 400 rather than a generic 500.
+		distinctCount := countDistinct(numbersList)
+		if distinctCount > lines*numPerLine {
+			sendHTTPError(w, fmt.Sprintf("cannot fit all %d numbers in %d lines of %d", distinctCount, lines, numPerLine), nil, http.StatusBadRequest)
+			return
+		}
+		generatedNumbers = generator.GetNumbersEnsureAll(numbersList, lines, numPerLine)
+	} else {
+		generatedNumbers = generator.GetNumbers(numbersList, lines, numPerLine)
+	}
+
 	if generatedNumbers == nil {
 		sendHTTPError(w, "Error generating numbers: ensure the 'numbersList' contains enough unique numbers", nil, http.StatusInternalServerError)
 		return
@@ -78,6 +92,24 @@ func VersionHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+// parseQueryParamBool parses a boolean query parameter, accepting "true" and "1" as true.
+func parseQueryParamBool(r *http.Request, param string, defaultValue bool) bool {
+	if value, ok := r.URL.Query()[param]; ok && len(value[0]) > 0 {
+		v := strings.ToLower(value[0])
+		return v == "true" || v == "1"
+	}
+	return defaultValue
+}
+
+// countDistinct returns the number of distinct values in the slice.
+func countDistinct(nums []int) int {
+	seen := make(map[int]bool, len(nums))
+	for _, n := range nums {
+		seen[n] = true
+	}
+	return len(seen)
+}
+
 // parseQueryParamInt parses an integer query parameter.
 func parseQueryParamInt(r *http.Request, param string, defaultValue int) int {
 	if value, ok := r.URL.Query()[param]; ok && len(value[0]) > 0 {
@@ -92,7 +124,7 @@ func parseQueryParamInt(r *http.Request, param string, defaultValue int) int {
 func parseNumbersListQueryParam(r *http.Request) ([]int, error) {
 	if numbersParam, ok := r.URL.Query()["numbersList"]; ok && len(numbersParam[0]) > 0 {
 		var parsedNumbersList []int
-		for _, numStr := range strings.Split(numbersParam[0], ",") {
+		for numStr := range strings.SplitSeq(numbersParam[0], ",") {
 			num, err := strconv.Atoi(strings.TrimSpace(numStr))
 			if err != nil {
 				return nil, fmt.Errorf("invalid numbersList parameter: %v", err)

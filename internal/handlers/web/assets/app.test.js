@@ -1,6 +1,6 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { getBallClass } = require('./app.js')
+const { getBallClass, buildNumbersUrl } = require('./app.js')
 
 test('getBallClass returns ball-blue for numbers 1-9', () => {
   assert.equal(getBallClass(1), 'ball-blue')
@@ -28,4 +28,15 @@ test('getBallClass returns ball-red for numbers 30-39', () => {
 
 test('getBallClass returns ball-purple for number 40', () => {
   assert.equal(getBallClass(40), 'ball-purple')
+})
+
+test('buildNumbersUrl returns URL without ensureAllNumbers when flag is false', () => {
+  const url = buildNumbersUrl('./numbers', 4, 6, [1, 2, 3, 4, 5, 6], false)
+  assert.equal(url, './numbers?lines=4&numPerLine=6&numbersList=1,2,3,4,5,6')
+  assert.ok(!url.includes('ensureAllNumbers'))
+})
+
+test('buildNumbersUrl appends ensureAllNumbers=true when flag is true', () => {
+  const url = buildNumbersUrl('./numbers', 4, 6, [1, 2, 3, 4, 5, 6], true)
+  assert.equal(url, './numbers?lines=4&numPerLine=6&numbersList=1,2,3,4,5,6&ensureAllNumbers=true')
 })
