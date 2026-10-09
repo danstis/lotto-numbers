@@ -53,6 +53,8 @@ go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.70
 go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.70.0/go.mod h1:1uuRkBwsaKmXKBwlSDBJ6V6dlgZq8XLY7HXVwLIGeE4=
 go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.71.0 h1:jCSatxkz7I19oUOz3UOJSnKx49hlXuE00OuPzaJCa7k=
 go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.71.0/go.mod h1:bACfoFljYysuN0gZsGRCKBQMjKslSDiEAzmSEiZNlRI=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.72.0 h1:OB2Uj/zVI03+FrzEvEcw8PwFLlGzzCjcxbsCWuCcG3I=
+go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.72.0/go.mod h1:ABTMg6leEdcok2hoBV/aQ6nyW93tRC5iCMuEuFYVqKs=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.68.0 h1:jhVIQEprwUTV+KfzzliLidclhoTOoHTgdz96kAyR8mU=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.68.0/go.mod h1:4HsdbLUbernaTnA8CNaNE+1g026SciXb3juRYe3l8EY=
 go.opentelemetry.io/contrib/instrumentation/runtime v0.72.0 h1:rv8t3kKjyC2/9D99L1MZt4tJSZO4aYUmHus7L//iKKg=
